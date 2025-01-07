@@ -1,0 +1,23 @@
+@use "../../styles/variables";
+
+.button {
+  border: none;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  &.primary {
+    background-color: variables.$primary-color;
+    color: #fff;
+
+    &:hover:not(:disabled) {
+      background-color: variables.$blue02;
+    }
+  }
+
+  .icon {
+    font-size: 18px;
+  }
+}

@@ -1,0 +1,87 @@
+@use "./variables";
+
+.inline-block {
+  display: inline-block;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.align-item-center {
+  align-items: center;
+}
+
+.align-item-start {
+  align-items: flex-start;
+}
+
+.flex-start {
+  justify-content: flex-start;
+}
+
+.flex-end {
+  justify-content: flex-end;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.list-none {
+  list-style: none;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: variables.$nav-link-color;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.block {
+  display: block;
+}
+
+.bg-grey01 {
+  background-color: variables.$grey01;
+}
+
+.bg-grey05 {
+  background-color: variables.$grey05;
+}
+
+.width-50 {
+  width: 50%;
+}
+
+.width-full {
+  width: 100%;
+}
+
+.relative {
+  position: relative;
+}

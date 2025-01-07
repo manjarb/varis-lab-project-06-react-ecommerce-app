@@ -1,0 +1,6 @@
+@use "../../styles/variables";
+
+.countdownContainer {
+  background-color: variables.$light-blue;
+  border: 1px dashed variables.$primary-color;
+}

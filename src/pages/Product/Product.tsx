@@ -1,0 +1,114 @@
+import React, { useState } from "react";
+import ClipLoader from "react-spinners/ClipLoader";
+import useProductDetail from "../../hooks/useProductDetail/useProductDetail";
+import CategoryBanner from "../Category/components/CategoryBanner/CategoryBanner";
+import ProductImageGallery from "../../components/ProductImageGallery/ProductImageGallery";
+import { calculateOriginalPrice } from "../../utils/price.utlls";
+import ProductDetailInfo from "../../components/ProductDetailInfo/ProductDetailInfo";
+import AddToCartModalContent from "../../components/AddToCartModalContent/AddToCartModalContent";
+import { useCart } from "../../hooks/useCart/useCart";
+import ReviewSection from "./components/ReviewSection";
+
+const Product: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { productDetail, isLoading } = useProductDetail();
+  const { addToCart } = useCart();
+
+  const onOpenModal = () => setIsModalOpen(true);
+  const onCloseModal = () => setIsModalOpen(false);
+
+  const onAddToCart = () => {
+    if (productDetail) {
+      addToCart({
+        id: productDetail.id,
+        title: productDetail.title,
+        price: productDetail.price,
+        quantity: 1,
+        image: productDetail.thumbnail,
+        originalPrice: calculateOriginalPrice(
+          productDetail.price,
+          productDetail.discountPercentage
+        ),
+      });
+      onOpenModal();
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="text-center mb-30">
+        <ClipLoader
+          size={40}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
+
+  if (!productDetail) {
+    return <h2>No Product Available</h2>;
+  }
+
+  const {
+    title,
+    images,
+    description,
+    brand,
+    reviews,
+    rating,
+    price,
+    discountPercentage,
+    sku,
+    stock,
+    availabilityStatus,
+    shippingInformation,
+    warrantyInformation,
+  } = productDetail;
+  const originalPrice = calculateOriginalPrice(price, discountPercentage);
+
+  return (
+    <div>
+      <CategoryBanner name={title} />
+      <section className="pt-60">
+        <div className="container">
+          <div className="flex mb-35">
+            <div className="width-50">
+              <div className="pr-10">
+                <ProductImageGallery images={images} />
+              </div>
+            </div>
+            <div className="width-50">
+              <div className="pl-10">
+                <ProductDetailInfo
+                  title={title}
+                  brand={brand}
+                  rating={rating}
+                  reviewsCount={reviews.length}
+                  price={price}
+                  originalPrice={originalPrice}
+                  discountPercentage={discountPercentage}
+                  description={description}
+                  sku={sku}
+                  stock={stock}
+                  availabilityStatus={availabilityStatus}
+                  shippingInfo={shippingInformation}
+                  warrantyInfo={warrantyInformation}
+                  onButtonClick={onAddToCart}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="pb-30">
+            <h3 className="fs-24">Reviews</h3>
+            <ReviewSection rating={rating} reviews={reviews} />
+          </div>
+        </div>
+      </section>
+
+      <AddToCartModalContent isOpen={isModalOpen} onClose={onCloseModal} />
+    </div>
+  );
+};
+
+export default Product;

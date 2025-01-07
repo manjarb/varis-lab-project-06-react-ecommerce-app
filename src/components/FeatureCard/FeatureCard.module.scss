@@ -1,0 +1,16 @@
+@use "../../styles/variables";
+
+.featureCard {
+  align-items: center;
+  background-color: variables.$grey01;
+  gap: 12px;
+
+  .icon {
+    font-size: 32px;
+    color: variables.$primary-color;
+  }
+
+  p {
+    color: variables.$grey02;
+  }
+}

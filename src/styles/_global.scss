@@ -1,0 +1,31 @@
+@use "normalize.css";
+@use "./variables";
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 1200px; /* Adjust as needed */
+  margin: 0 auto;
+  padding: 0 16px; /* Adds some padding on small screens */
+  width: 100%;
+}
+
+body {
+  font-family: variables.$font-stack;
+}
+
+img {
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}

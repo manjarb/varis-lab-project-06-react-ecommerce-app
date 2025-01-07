@@ -1,0 +1,121 @@
+@use "./variables";
+
+// Font Sizes
+.fs-12 {
+  font-size: 12px;
+}
+.fs-14 {
+  font-size: 14px;
+}
+.fs-16 {
+  font-size: 16px;
+}
+.fs-18 {
+  font-size: 18px;
+}
+.fs-20 {
+  font-size: 20px;
+}
+.fs-24 {
+  font-size: 24px;
+}
+.fs-28 {
+  font-size: 28px;
+}
+.fs-32 {
+  font-size: 32px;
+}
+.fs-40 {
+  font-size: 40px;
+}
+.fs-48 {
+  font-size: 48px;
+}
+.fs-64 {
+  font-size: 64px;
+}
+
+.fs-72 {
+  font-size: 72px;
+}
+
+// Font Weights
+.fw-light {
+  font-weight: 300;
+}
+.fw-normal {
+  font-weight: 400;
+}
+.fw-medium {
+  font-weight: 500;
+}
+.fw-bold {
+  font-weight: 700;
+}
+.fw-bolder {
+  font-weight: 900;
+}
+
+// Text Colors
+.text-primary {
+  color: variables.$primary-color !important;
+}
+// .text-secondary {
+//   color: $secondary-color;
+// }
+.text-muted {
+  color: variables.$grey02;
+}
+// .text-danger {
+//   color: #dc3545;
+// } // Example danger color
+
+// Text Alignment
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+
+// Text Transform
+.text-uppercase {
+  text-transform: uppercase;
+}
+.text-lowercase {
+  text-transform: lowercase;
+}
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+.text-line-through {
+  text-decoration: line-through;
+}
+
+.lh-1 {
+  line-height: 1;
+}
+
+.lh-1-25 {
+  line-height: 1.25;
+}
+
+.lh-1-5 {
+  line-height: 1.5;
+}
+
+.lh-1-75 {
+  line-height: 1.75;
+}
+
+.lh-2 {
+  line-height: 2;
+}
+
+.lh-normal {
+  line-height: normal;
+}

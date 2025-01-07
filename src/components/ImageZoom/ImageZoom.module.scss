@@ -1,0 +1,11 @@
+.imageContainer {
+  overflow: hidden; // Ensure the image doesn't go outside the container
+}
+
+.image {
+  transition: transform 0.5s ease-in-out; // Smooth transition for the zoom effect
+
+  &:hover {
+    transform: scale(1.05); // Zoom in slightly
+  }
+}

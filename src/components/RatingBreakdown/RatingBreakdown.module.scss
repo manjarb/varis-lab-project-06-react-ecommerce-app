@@ -1,0 +1,35 @@
+@use "../../styles/variables";
+
+.starIcon {
+  color: variables.$orange01;
+}
+
+.bar {
+  position: relative;
+  flex-grow: 1;
+  height: 9px;
+  background-color: variables.$grey03;
+  border-radius: 4px;
+  overflow: hidden;
+
+  .fill {
+    height: 100%;
+    border-radius: 4px;
+  }
+}
+
+.greenBar {
+  background-color: #28a745; // Green for 4 and 5 stars
+}
+
+.orangeBar {
+  background-color: #ffc107; // Orange for 3 stars
+}
+
+.redBar {
+  background-color: #dc3545; // Red for 1 and 2 stars
+}
+
+.defaultBar {
+  background-color: #ced4da; // Default gray
+}

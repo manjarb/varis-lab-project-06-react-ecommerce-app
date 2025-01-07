@@ -1,0 +1,95 @@
+// Margin Utilities
+@mixin generate-margin($property, $size) {
+  @if $property == "t" {
+    margin-top: #{$size}px;
+  } @else if $property == "r" {
+    margin-right: #{$size}px;
+  } @else if $property == "b" {
+    margin-bottom: #{$size}px;
+  } @else if $property == "l" {
+    margin-left: #{$size}px;
+  } @else if $property == "x" {
+    margin-left: #{$size}px;
+    margin-right: #{$size}px;
+  } @else if $property == "y" {
+    margin-top: #{$size}px;
+    margin-bottom: #{$size}px;
+  } @else {
+    margin: #{$size}px;
+  }
+}
+
+@mixin generate-padding($property, $size) {
+  @if $property == "t" {
+    padding-top: #{$size}px;
+  } @else if $property == "r" {
+    padding-right: #{$size}px;
+  } @else if $property == "b" {
+    padding-bottom: #{$size}px;
+  } @else if $property == "l" {
+    padding-left: #{$size}px;
+  } @else if $property == "x" {
+    padding-left: #{$size}px;
+    padding-right: #{$size}px;
+  } @else if $property == "y" {
+    padding-top: #{$size}px;
+    padding-bottom: #{$size}px;
+  } @else {
+    padding: #{$size}px;
+  }
+}
+
+// Generate classes for common pixel values
+@each $size in 0, 3, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 80,
+  90, 100
+{
+  // Margin classes
+  .mt-#{$size} {
+    @include generate-margin(t, $size);
+  }
+  .mr-#{$size} {
+    @include generate-margin(r, $size);
+  }
+  .mb-#{$size} {
+    @include generate-margin(b, $size);
+  }
+  .ml-#{$size} {
+    @include generate-margin(l, $size);
+  }
+  .mx-#{$size} {
+    @include generate-margin(x, $size);
+  }
+  .my-#{$size} {
+    @include generate-margin(y, $size);
+  }
+  .m-#{$size} {
+    @include generate-margin("", $size);
+  }
+
+  // Padding classes
+  .pt-#{$size} {
+    @include generate-padding(t, $size);
+  }
+  .pr-#{$size} {
+    @include generate-padding(r, $size);
+  }
+  .pb-#{$size} {
+    @include generate-padding(b, $size);
+  }
+  .pl-#{$size} {
+    @include generate-padding(l, $size);
+  }
+  .px-#{$size} {
+    @include generate-padding(x, $size);
+  }
+  .py-#{$size} {
+    @include generate-padding(y, $size);
+  }
+  .p-#{$size} {
+    @include generate-padding("", $size);
+  }
+
+  .gap-#{$size} {
+    gap: #{$size}px;
+  }
+}

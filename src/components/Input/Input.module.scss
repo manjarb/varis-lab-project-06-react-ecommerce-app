@@ -1,0 +1,25 @@
+@use "../../styles/variables";
+
+.inputWrapper {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid variables.$grey04;
+  outline: none;
+  transition: border-color 0.3s;
+
+  &::placeholder {
+    color: variables.$grey02;
+  }
+
+  &:focus {
+    border-color: variables.$primary-color;
+  }
+}
+
+.error {
+  color: variables.$red01;
+}

@@ -1,0 +1,10 @@
+@use "../../styles/variables";
+
+.footer {
+  background-color: variables.$black02;
+  color: variables.$white;
+
+  p {
+    line-height: 2;
+  }
+}

@@ -1,0 +1,102 @@
+@use "./variables";
+
+.category-list-container {
+  width: 84%;
+}
+
+.category-list-box {
+  display: flex;
+  flex-wrap: wrap;
+
+  > div {
+    width: 25%;
+  }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid variables.$grey04;
+  }
+
+  th {
+    font-weight: bold;
+    background-color: variables.$grey05;
+  }
+
+  // td {
+  //   vertical-align: middle;
+  // }
+
+  // // Optional responsive table
+  // &.responsive {
+  //   overflow-x: auto;
+  //   display: block;
+  //   white-space: nowrap;
+  // }
+}
+
+// Additional Utility Classes
+.table-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.table-discount {
+  color: variables.$primary-color;
+}
+
+.table-original-price {
+  text-decoration: line-through;
+  color: variables.$grey02;
+}
+
+.table-actions {
+  button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+}
+
+.table-quantity {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  button {
+    background-color: variables.$grey03;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+
+  span {
+    font-size: 16px;
+    font-weight: bold;
+    width: 30px;
+    text-align: center;
+  }
+}
+
+.table-total {
+  text-align: right;
+
+  h3 {
+    font-size: 20px;
+    font-weight: bold;
+  }
+}
