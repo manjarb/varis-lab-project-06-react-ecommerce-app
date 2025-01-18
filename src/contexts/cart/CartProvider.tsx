@@ -9,7 +9,7 @@ import {
 type CartAction =
   | {
       type: CartActionTypes.ADD_TO_CART;
-      payload: CartItem & { id: number };
+      payload: CartItem;
     }
   | { type: CartActionTypes.REMOVE_FROM_CART; payload: { id: number } }
   | {

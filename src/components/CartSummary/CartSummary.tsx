@@ -17,11 +17,11 @@ const CartSummary: React.FC<CartSummaryProps> = ({ onIconClick }) => {
   );
 
   return (
-    <div className={`inline-block relative`} onClick={onIconClick}>
+    <div className="relative" onClick={onIconClick}>
       <FontAwesomeIcon className="pointer fs-20" icon={faCartShopping} />
       {totalItems > 0 && (
         <span
-          className={`${styles.cartCount} fs-12 fw-bold text-center p-5`}
+          className={`${styles.cartCount} fs-12 fw-bold text-center`}
           aria-label="Cart item count"
         >
           {totalItems}

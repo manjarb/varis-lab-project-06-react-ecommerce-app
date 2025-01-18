@@ -37,7 +37,7 @@ const Home: React.FC = () => {
 
   const targetDate = useMemo(() => {
     const date = new Date();
-    date.setDate(date.getDate() + 1); // Add 2 days
+    date.setDate(date.getDate() + 1); // Add 1 days
 
     return date.toISOString();
   }, []);

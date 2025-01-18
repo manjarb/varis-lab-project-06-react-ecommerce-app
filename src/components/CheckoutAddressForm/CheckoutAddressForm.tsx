@@ -36,8 +36,12 @@ const CheckoutAddressForm: React.FC<CheckoutAddressFormProps> = ({
     resolver: yupResolver(validationSchema),
   });
 
+  const onFormSubmit = (data: CheckoutAddressFormData) => {
+    onSubmit({ ...data });
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onFormSubmit)}>
       <div className="mb-15">
         <Input
           label="Address"
