@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouteObject } from "react-router";
+import RouteErrorFallback from "./RouteErrorFallback";
 import MainLayout from "@/app/layouts/MainLayout/MainLayout";
 import Home from "@/pages/Home/Home";
 import Category from "@/pages/Category/Category";
@@ -10,6 +11,7 @@ import OrderSuccess from "@/pages/Order/OrderSuccess";
 export const routes: RouteObject[] = [
   {
     element: <MainLayout />,
+    errorElement: <RouteErrorFallback />,
     children: [
       { path: "/", element: <Home /> },
       { path: "/categories", element: <Category /> },

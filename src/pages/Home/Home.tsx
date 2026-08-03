@@ -18,6 +18,7 @@ import FeatureCard from "@/shared/components/FeatureCard/FeatureCard";
 import useProductRoute from "@/shared/hooks/useProductRoute";
 import { productQueries } from "@/features/products/queries";
 import { Category as CategoryType } from "@/features/products/types";
+import ErrorMessage from "@/shared/components/ErrorMessage/ErrorMessage";
 
 const PRODUCTS_LIST_LIMIT = 12;
 
@@ -27,21 +28,26 @@ const Home: React.FC = () => {
   );
   const { goToProductDetails } = useProductRoute();
 
-  const { data: bestProductsData, isLoading: isBestProductsLoading } = useQuery(
-    productQueries.list({ limit: 5 }),
-  );
+  const {
+    data: bestProductsData,
+    isLoading: isBestProductsLoading,
+    isError: isBestProductsError,
+  } = useQuery(productQueries.list({ limit: 5 }));
   const { data: categories } = useQuery(productQueries.categories());
 
   const currentCategory = selectedCategory ?? categories?.[0] ?? null;
 
-  const { data: categoryProducts, isLoading: isCategoryProductsLoading } =
-    useQuery({
-      ...productQueries.byCategory({
-        category: currentCategory?.slug ?? "",
-        limit: PRODUCTS_LIST_LIMIT,
-      }),
-      enabled: currentCategory !== null,
-    });
+  const {
+    data: categoryProducts,
+    isLoading: isCategoryProductsLoading,
+    isError: isCategoryProductsError,
+  } = useQuery({
+    ...productQueries.byCategory({
+      category: currentCategory?.slug ?? "",
+      limit: PRODUCTS_LIST_LIMIT,
+    }),
+    enabled: currentCategory !== null,
+  });
 
   const targetDate = useMemo(() => {
     const date = new Date();
@@ -90,7 +96,9 @@ const Home: React.FC = () => {
             <CountdownTimer targetDate={targetDate} />
           </div>
           <div className="flex gap-25">
-            {isBestProductsLoading ? (
+            {isBestProductsError ? (
+              <ErrorMessage />
+            ) : isBestProductsLoading ? (
               <div className="text-center">
                 <ClipLoader
                   size={40}
@@ -134,7 +142,9 @@ const Home: React.FC = () => {
               onCategoryClick={setSelectedCategory}
             />
             <div className="category-list-container category-list-box">
-              {isCategoryProductsLoading ? (
+              {isCategoryProductsError ? (
+                <ErrorMessage />
+              ) : isCategoryProductsLoading ? (
                 <div className="text-center">
                   <ClipLoader
                     size={40}

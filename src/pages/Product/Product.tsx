@@ -10,11 +10,16 @@ import ProductDetailInfo from "@/features/products/components/ProductDetailInfo/
 import AddToCartModalContent from "@/features/cart/components/AddToCartModalContent/AddToCartModalContent";
 import { useCart } from "@/features/cart/useCart";
 import { productQueries } from "@/features/products/queries";
+import ErrorMessage from "@/shared/components/ErrorMessage/ErrorMessage";
 
 const Product: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { id } = useParams<{ id: string }>();
-  const { data: productDetail, isLoading } = useQuery({
+  const {
+    data: productDetail,
+    isLoading,
+    isError,
+  } = useQuery({
     ...productQueries.detail(id ?? ""),
     enabled: !!id,
   });
@@ -52,8 +57,12 @@ const Product: React.FC = () => {
     );
   }
 
-  if (!productDetail) {
-    return <h2>No Product Available</h2>;
+  if (isError || !productDetail) {
+    return (
+      <div className="container">
+        <ErrorMessage message="We couldn't load this product. Please try again." />
+      </div>
+    );
   }
 
   const {

@@ -9,6 +9,7 @@ import { calculateTotalPages } from "@/shared/utils/pagination.utils";
 import useProductRoute from "@/shared/hooks/useProductRoute";
 import { productQueries } from "@/features/products/queries";
 import { Category as CategoryType } from "@/features/products/types";
+import ErrorMessage from "@/shared/components/ErrorMessage/ErrorMessage";
 
 const PAGE_LIMIT = 20;
 
@@ -22,7 +23,7 @@ const Category: React.FC = () => {
   const { data: categories } = useQuery(productQueries.categories());
   const currentCategory = selectedCategory ?? categories?.[0] ?? null;
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     ...productQueries.byCategory({
       category: currentCategory?.slug ?? "",
       page,
@@ -54,7 +55,9 @@ const Category: React.FC = () => {
               onCategoryClick={onCategoryClick}
             />
             <div className="category-list-container">
-              {isLoading ? (
+              {isError ? (
+                <ErrorMessage />
+              ) : isLoading ? (
                 <div className="text-center">
                   <ClipLoader
                     size={40}
