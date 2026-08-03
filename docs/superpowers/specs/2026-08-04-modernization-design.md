@@ -46,18 +46,24 @@ smoke test in the browser.
 
 ## Target stack
 
+Version targets confirmed against npm on 2026-08-04 (user approved deviating
+from the originally drafted Vite 7 / Router 7 / TS 5.9 to current latest majors):
+
 | Area | Target |
 |---|---|
-| React | 19.x |
-| Build | Vite 7 + latest @vitejs/plugin-react |
-| Routing | react-router 7, `createBrowserRouter` + `RouterProvider` (no loaders — TanStack Query owns data) |
-| Data | latest TanStack Query v5 + Devtools + `@tanstack/eslint-plugin-query` |
-| Forms | react-hook-form + **zod** (yup removed) |
-| TypeScript | ~5.9, strict |
-| Lint/format | ESLint 9 flat config + Prettier, import ordering |
-| Tests | Vitest + React Testing Library + MSW (jsdom) |
+| React | 19.2.x |
+| Build | Vite 8.2 + @vitejs/plugin-react 6 |
+| Routing | react-router 8.3, `createBrowserRouter` + `RouterProvider` (data mode, no loaders — TanStack Query owns data). Requires Node ≥22.22. |
+| Data | TanStack Query 5.101 + Devtools + `@tanstack/eslint-plugin-query` |
+| Forms | react-hook-form + **zod 4** (yup removed) |
+| TypeScript | 6.0.3, strict (TS 7 exists but typescript-eslint caps at <6.1) |
+| Lint/format | ESLint 10 flat config + Prettier; `eslint-plugin-import-x` replaces `eslint-plugin-import` (no ESLint 10 support) |
+| Tests | Vitest 4 + React Testing Library 16 + MSW 2 (jsdom) |
 | HTTP | axios (kept) |
 | Styling | SCSS modules (kept, unchanged) |
+
+**Prerequisite:** Node ≥22.22 (react-router 8 engine floor; machine currently
+has 22.12 — update the Node 22 line before Phase 1).
 
 Kept as-is: swiper, dayjs, Font Awesome, react-modal, react-paginate,
 react-loading-skeleton, react-spinners, normalize.css. `.env` unchanged
