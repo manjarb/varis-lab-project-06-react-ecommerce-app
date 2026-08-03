@@ -22,7 +22,7 @@ import Banner from "./components/Banner/Banner";
 const Home: React.FC = () => {
   const productsListLimit = 12;
   const [currentCategory, setCurrentCategory] = useState<CategoryType | null>(
-    null
+    null,
   );
   const {
     fetchBestProducts,

@@ -10,13 +10,14 @@ const useProductDetail = () => {
   const fetchProductDetail = async (productId: string) => {
     try {
       const { data } = await axios.get<Product>(
-        `${config.baseURL}/products/${productId}`
+        `${config.baseURL}/products/${productId}`,
       );
       return data; // Return the product details
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(
-        error.response?.data?.message || "Failed to fetch product details"
+        error.response?.data?.message || "Failed to fetch product details",
+        { cause: error },
       );
     }
   };

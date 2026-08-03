@@ -21,13 +21,14 @@ const useProducts = () => {
             skip: calculateOffset(page, limit), // Use reusable offset calculation
             limit, // Limit the number of products
           },
-        }
+        },
       );
       return data; // Return the entire API response
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(
-        error.response?.data?.message || "Failed to fetch products"
+        error.response?.data?.message || "Failed to fetch products",
+        { cause: error },
       );
     }
   };
@@ -49,13 +50,14 @@ const useProducts = () => {
             skip: calculateOffset(page, limit), // Use reusable offset calculation
             limit, // Limit the number of products
           },
-        }
+        },
       );
       return data; // Return the entire API response
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(
-        error.response?.data?.message || "Failed to fetch products"
+        error.response?.data?.message || "Failed to fetch products",
+        { cause: error },
       );
     }
   };
@@ -63,13 +65,14 @@ const useProducts = () => {
   const fetchProductCategories = async () => {
     try {
       const { data } = await axios.get<Category[]>(
-        `${config.baseURL}/products/categories`
+        `${config.baseURL}/products/categories`,
       );
       return data; // Return the entire API response
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(
-        error.response?.data?.message || "Failed to fetch product categories"
+        error.response?.data?.message || "Failed to fetch product categories",
+        { cause: error },
       );
     }
   };

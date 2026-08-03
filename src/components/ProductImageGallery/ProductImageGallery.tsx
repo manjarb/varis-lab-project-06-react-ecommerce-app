@@ -12,7 +12,7 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
   defaultImage,
 }) => {
   const [selectedImage, setSelectedImage] = useState<string>(
-    defaultImage || images[0]
+    defaultImage || images[0],
   );
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 

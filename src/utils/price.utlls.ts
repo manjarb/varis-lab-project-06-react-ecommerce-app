@@ -6,7 +6,7 @@
  */
 export const calculateOriginalPrice = (
   price: number,
-  discountPercentage?: number
+  discountPercentage?: number,
 ): number => {
   if (
     !discountPercentage ||

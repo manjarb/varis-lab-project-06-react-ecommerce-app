@@ -30,10 +30,12 @@
 ### Task 1: Node check + React 19 / Vite 8 / TypeScript 6 upgrade
 
 **Files:**
+
 - Modify: `package.json`, `package-lock.json`
 - Modify (only if type errors surface): files listed by `tsc -b`
 
 **Interfaces:**
+
 - Produces: a building, running app on react@19.2.8, vite@8.2.0, @vitejs/plugin-react@6.0.5, typescript@6.0.3. No source API changes.
 
 - [ ] **Step 1: Verify Node version**
@@ -74,6 +76,7 @@ git commit -m "chore: upgrade to React 19, Vite 8, TypeScript 6"
 ### Task 2: react-router 8 migration (data mode)
 
 **Files:**
+
 - Modify: `package.json` (remove `react-router-dom`, add `react-router@8.3.0`)
 - Modify: `src/App.tsx` (createBrowserRouter conversion)
 - Modify: `src/Layouts/MainLayout/MainLayout.tsx:2` (import swap)
@@ -82,6 +85,7 @@ git commit -m "chore: upgrade to React 19, Vite 8, TypeScript 6"
 - Modify: `src/hooks/useProductDetail/useProductDetail.tsx:3` (import swap)
 
 **Interfaces:**
+
 - Produces: `src/App.tsx` default-exports `App` which renders `<RouterProvider router={router} />`; the route tree is unchanged (`/`, `/categories`, `/products/:id`, `/cart`, `/checkout`, `/order/success`, all under `MainLayout`). Task 12 later moves this router to `src/app/router.tsx`.
 
 - [ ] **Step 1: Swap the package**
@@ -130,6 +134,7 @@ export default App;
 - [ ] **Step 3: Update remaining `react-router-dom` imports**
 
 In each of these files change `from "react-router-dom"` to `from "react-router"` (imported names are unchanged):
+
 - `src/Layouts/MainLayout/MainLayout.tsx` (`Outlet`)
 - `src/components/Header/Header.tsx` (`Link`)
 - `src/hooks/useProductRoute/useProductRoute.tsx` (`useNavigate`)
@@ -156,6 +161,7 @@ git commit -m "chore: migrate to react-router 8 data mode"
 ### Task 3: ESLint 10 + Prettier + import-x + TanStack Query plugin + `@/` alias
 
 **Files:**
+
 - Modify: `package.json` (dev deps + scripts)
 - Modify: `eslint.config.js` (full rewrite below)
 - Create: `.prettierrc.json`, `.prettierignore`
@@ -163,6 +169,7 @@ git commit -m "chore: migrate to react-router 8 data mode"
 - Modify: `tsconfig.app.json` (paths)
 
 **Interfaces:**
+
 - Produces: `npm run lint`, `npm run format`, `npm run format:check`, `npm run typecheck` scripts; `@/*` resolves to `src/*` in both Vite and TypeScript. Existing relative imports keep working — files migrate to `@/` as later tasks touch them.
 
 - [ ] **Step 1: Upgrade/install lint + format packages**
@@ -216,7 +223,7 @@ export default tseslint.config(
       "import-x/order": "error",
     },
   },
-  prettierConfig
+  prettierConfig,
 );
 ```
 
@@ -304,11 +311,13 @@ git commit -m "chore: ESLint 10, Prettier, import-x, query lint plugin, @ alias"
 ### Task 4: Vitest + React Testing Library + MSW setup
 
 **Files:**
+
 - Modify: `package.json` (dev deps + test scripts), `vite.config.ts` (test block), `tsconfig.app.json` (vitest types)
 - Create: `src/test/setup.ts`, `src/test/msw/server.ts`, `src/test/msw/handlers.ts`, `src/test/msw/fixtures.ts`, `src/test/utils.tsx`
 - Test: `src/utils/pagination.utils.test.ts`, `src/utils/price.utils.test.ts`
 
 **Interfaces:**
+
 - Produces: `npm run test` / `npm run test:watch`; MSW `server` with dummyjson-shaped `handlers`; fixtures `makeProduct(overrides?)`, `makeProductsResponse(count, overrides?)`, `categories` (array of 3 `Category`); `createTestQueryClient()` and `renderWithClient(ui)` helpers in `src/test/utils.tsx`. All later test tasks consume these exact names.
 
 - [ ] **Step 1: Install test packages**
@@ -407,11 +416,11 @@ export function makeProduct(overrides: Partial<Product> = {}): Product {
 
 export function makeProductsResponse(
   count: number,
-  overrides: Partial<FetchProductsResponse> = {}
+  overrides: Partial<FetchProductsResponse> = {},
 ): FetchProductsResponse {
   return {
     products: Array.from({ length: count }, (_, i) =>
-      makeProduct({ id: i + 1, title: `Product ${i + 1}` })
+      makeProduct({ id: i + 1, title: `Product ${i + 1}` }),
     ),
     total: 100,
     skip: 0,
@@ -421,9 +430,21 @@ export function makeProductsResponse(
 }
 
 export const categories: Category[] = [
-  { slug: "beauty", name: "Beauty", url: "https://dummyjson.com/products/category/beauty" },
-  { slug: "fragrances", name: "Fragrances", url: "https://dummyjson.com/products/category/fragrances" },
-  { slug: "furniture", name: "Furniture", url: "https://dummyjson.com/products/category/furniture" },
+  {
+    slug: "beauty",
+    name: "Beauty",
+    url: "https://dummyjson.com/products/category/beauty",
+  },
+  {
+    slug: "fragrances",
+    name: "Fragrances",
+    url: "https://dummyjson.com/products/category/fragrances",
+  },
+  {
+    slug: "furniture",
+    name: "Furniture",
+    url: "https://dummyjson.com/products/category/furniture",
+  },
 ];
 ```
 
@@ -453,14 +474,14 @@ export const handlers = [
             id: skip + i + 1,
             title: `${String(params.slug)} product ${skip + i + 1}`,
             category: String(params.slug),
-          })
+          }),
         ),
-      })
+      }),
     );
   }),
 
   http.get(`${BASE}/products/:id`, ({ params }) =>
-    HttpResponse.json(makeProduct({ id: Number(params.id) }))
+    HttpResponse.json(makeProduct({ id: Number(params.id) })),
   ),
 
   http.get(`${BASE}/products`, ({ request }) => {
@@ -590,12 +611,14 @@ git commit -m "test: add Vitest + RTL + MSW infrastructure and utils tests"
 ### Task 5: Replace yup with zod
 
 **Files:**
+
 - Create: `src/components/CheckoutAddressForm/checkoutAddress.schema.ts`
 - Test: `src/components/CheckoutAddressForm/checkoutAddress.schema.test.ts`
 - Modify: `src/components/CheckoutAddressForm/CheckoutAddressForm.tsx`
 - Modify: `package.json` (swap deps)
 
 **Interfaces:**
+
 - Produces: `checkoutAddressSchema` (zod object: address, email, phone — all required strings, email validated) and `CheckoutAddressFormData = z.infer<typeof checkoutAddressSchema>` exported from `checkoutAddress.schema.ts`. `CheckoutAddressForm.tsx` re-exports `CheckoutAddressFormData` so existing importers (`useCheckout.ts`, `CheckoutAddressBox`) keep working unchanged.
 
 - [ ] **Step 1: Swap packages**
@@ -635,7 +658,7 @@ describe("checkoutAddressSchema", () => {
     const result = checkoutAddressSchema.safeParse({ ...valid, email: "nope" });
     expect(result.success).toBe(false);
     expect(result.error?.issues[0]?.message).toBe(
-      "Enter a valid email address"
+      "Enter a valid email address",
     );
   });
 
@@ -681,6 +704,7 @@ Expected: 4 tests PASS.
 - [ ] **Step 6: Swap the resolver in the form**
 
 In `src/components/CheckoutAddressForm/CheckoutAddressForm.tsx`:
+
 - Delete the `yup` and `yupResolver` imports and the inline `validationSchema`/`CheckoutAddressFormData` definitions (lines 3–12 and 18–26 of the current file).
 - Add at the top:
 
@@ -697,13 +721,13 @@ export type { CheckoutAddressFormData };
 - Change the `useForm` call to:
 
 ```tsx
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<CheckoutAddressFormData>({
-    resolver: zodResolver(checkoutAddressSchema),
-  });
+const {
+  register,
+  handleSubmit,
+  formState: { errors },
+} = useForm<CheckoutAddressFormData>({
+  resolver: zodResolver(checkoutAddressSchema),
+});
 ```
 
 The JSX and `onFormSubmit` stay unchanged.
@@ -727,11 +751,13 @@ git commit -m "refactor: replace yup with zod for checkout address validation"
 ### Task 6: Shared API client with normalized errors + QueryClient defaults
 
 **Files:**
+
 - Create: `src/shared/api/client.ts`
 - Test: `src/shared/api/client.test.ts`
 - Modify: `src/main.tsx` (QueryClient defaults)
 
 **Interfaces:**
+
 - Produces: `apiClient` (axios instance, baseURL from `VITE_API_BASE_URL`) and `class ApiError extends Error { status?: number }`, both exported from `@/shared/api/client`. Every rejected request from `apiClient` is an `ApiError` whose message comes from the server's `message` field when present. Tasks 7 and 11 consume `apiClient`.
 
 - [ ] **Step 1: Write the failing tests**
@@ -752,8 +778,8 @@ describe("apiClient", () => {
   it("normalizes server errors into ApiError with the server message", async () => {
     server.use(
       http.get("https://dummyjson.com/products/1", () =>
-        HttpResponse.json({ message: "Product not found" }, { status: 404 })
-      )
+        HttpResponse.json({ message: "Product not found" }, { status: 404 }),
+      ),
     );
 
     const error = await apiClient.get("/products/1").catch((e) => e);
@@ -765,8 +791,8 @@ describe("apiClient", () => {
   it("falls back to a generic message when the server sends none", async () => {
     server.use(
       http.get("https://dummyjson.com/products/1", () =>
-        HttpResponse.json({}, { status: 500 })
-      )
+        HttpResponse.json({}, { status: 500 }),
+      ),
     );
 
     const error = await apiClient.get("/products/1").catch((e) => e);
@@ -809,9 +835,9 @@ apiClient.interceptors.response.use(
       new ApiError(
         error.response?.data?.message ??
           "Something went wrong. Please try again.",
-        error.response?.status
-      )
-    )
+        error.response?.status,
+      ),
+    ),
 );
 ```
 
@@ -850,10 +876,12 @@ git commit -m "feat: add shared API client with normalized errors and query defa
 ### Task 7: Products API + query factories
 
 **Files:**
+
 - Create: `src/features/products/api.ts`, `src/features/products/queries.ts`
 - Test: `src/features/products/queries.test.tsx`
 
 **Interfaces:**
+
 - Consumes: `apiClient` from `@/shared/api/client`; types from `@/types/product.type`; `calculateOffset` from `@/utils/pagination.utils`.
 - Produces (consumed by Tasks 8–10 and 19):
   - `api.ts`: `getProducts(params?: ProductListParams): Promise<FetchProductsResponse>`, `getProductsByCategory(params: CategoryProductsParams): Promise<FetchProductsResponse>`, `getCategories(): Promise<Category[]>`, `getProduct(id: string | number): Promise<Product>`; interfaces `ProductListParams { page?: number; limit?: number }` and `CategoryProductsParams extends ProductListParams { category: string }`.
@@ -873,7 +901,7 @@ describe("productQueries", () => {
   it("list fetches products with the given limit", async () => {
     const { result } = renderHook(
       () => useQuery(productQueries.list({ limit: 5 })),
-      { wrapper: createQueryWrapper() }
+      { wrapper: createQueryWrapper() },
     );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -884,9 +912,9 @@ describe("productQueries", () => {
     const { result } = renderHook(
       () =>
         useQuery(
-          productQueries.byCategory({ category: "beauty", page: 2, limit: 20 })
+          productQueries.byCategory({ category: "beauty", page: 2, limit: 20 }),
         ),
-      { wrapper: createQueryWrapper() }
+      { wrapper: createQueryWrapper() },
     );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -895,10 +923,9 @@ describe("productQueries", () => {
   });
 
   it("categories fetches the category list", async () => {
-    const { result } = renderHook(
-      () => useQuery(productQueries.categories()),
-      { wrapper: createQueryWrapper() }
-    );
+    const { result } = renderHook(() => useQuery(productQueries.categories()), {
+      wrapper: createQueryWrapper(),
+    });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data?.map((c) => c.slug)).toEqual([
@@ -909,10 +936,9 @@ describe("productQueries", () => {
   });
 
   it("detail fetches a single product", async () => {
-    const { result } = renderHook(
-      () => useQuery(productQueries.detail(7)),
-      { wrapper: createQueryWrapper() }
-    );
+    const { result } = renderHook(() => useQuery(productQueries.detail(7)), {
+      wrapper: createQueryWrapper(),
+    });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data?.id).toBe(7);
@@ -931,11 +957,7 @@ Create `src/features/products/api.ts`:
 
 ```ts
 import { apiClient } from "@/shared/api/client";
-import {
-  Category,
-  FetchProductsResponse,
-  Product,
-} from "@/types/product.type";
+import { Category, FetchProductsResponse, Product } from "@/types/product.type";
 import { calculateOffset } from "@/utils/pagination.utils";
 
 export interface ProductListParams {
@@ -964,7 +986,7 @@ export async function getProductsByCategory({
 }: CategoryProductsParams): Promise<FetchProductsResponse> {
   const { data } = await apiClient.get<FetchProductsResponse>(
     `/products/category/${category}`,
-    { params: { skip: calculateOffset(page, limit), limit } }
+    { params: { skip: calculateOffset(page, limit), limit } },
   );
   return data;
 }
@@ -998,7 +1020,8 @@ import {
 export const productKeys = {
   all: ["products"] as const,
   lists: () => [...productKeys.all, "list"] as const,
-  list: (params: ProductListParams) => [...productKeys.lists(), params] as const,
+  list: (params: ProductListParams) =>
+    [...productKeys.lists(), params] as const,
   byCategory: (params: CategoryProductsParams) =>
     [...productKeys.lists(), "category", params] as const,
   categories: () => [...productKeys.all, "categories"] as const,
@@ -1056,9 +1079,11 @@ git commit -m "feat: add products API and query factories"
 ### Task 8: Home page onto declarative queries
 
 **Files:**
+
 - Modify: `src/pages/Home/Home.tsx` (full rewrite below)
 
 **Interfaces:**
+
 - Consumes: `productQueries` from `@/features/products/queries`.
 - Produces: Home no longer imports `useProducts`. Rendering identical except each section now shows its own loading spinner.
 
@@ -1091,27 +1116,26 @@ import Banner from "./components/Banner/Banner";
 const PRODUCTS_LIST_LIMIT = 12;
 
 const Home: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] =
-    useState<CategoryType | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(
+    null,
+  );
   const { goToProductDetails } = useProductRoute();
 
   const { data: bestProductsData, isLoading: isBestProductsLoading } = useQuery(
-    productQueries.list({ limit: 5 })
+    productQueries.list({ limit: 5 }),
   );
   const { data: categories } = useQuery(productQueries.categories());
 
   const currentCategory = selectedCategory ?? categories?.[0] ?? null;
 
-  const {
-    data: categoryProducts,
-    isLoading: isCategoryProductsLoading,
-  } = useQuery({
-    ...productQueries.byCategory({
-      category: currentCategory?.slug ?? "",
-      limit: PRODUCTS_LIST_LIMIT,
-    }),
-    enabled: currentCategory !== null,
-  });
+  const { data: categoryProducts, isLoading: isCategoryProductsLoading } =
+    useQuery({
+      ...productQueries.byCategory({
+        category: currentCategory?.slug ?? "",
+        limit: PRODUCTS_LIST_LIMIT,
+      }),
+      enabled: currentCategory !== null,
+    });
 
   const targetDate = useMemo(() => {
     const date = new Date();
@@ -1256,10 +1280,12 @@ git commit -m "refactor: Home page uses declarative product queries"
 ### Task 9: Category page onto declarative queries; delete useProducts
 
 **Files:**
+
 - Modify: `src/pages/Category/Category.tsx` (full rewrite below)
 - Delete: `src/hooks/useProducts/` (entire directory)
 
 **Interfaces:**
+
 - Consumes: `productQueries` from `@/features/products/queries`, `calculateTotalPages` from `@/utils/pagination.utils`.
 - Produces: pagination derives from the query response (`data.total`); `useProducts` is gone from the codebase.
 
@@ -1283,8 +1309,9 @@ import CategoryBanner from "./components/CategoryBanner/CategoryBanner";
 const PAGE_LIMIT = 20;
 
 const Category: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] =
-    useState<CategoryType | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(
+    null,
+  );
   const [page, setPage] = useState(1);
   const { goToProductDetails } = useProductRoute();
 
@@ -1387,10 +1414,12 @@ git commit -m "refactor: Category page uses declarative queries with derived pag
 ### Task 10: Product detail onto declarative query; delete useProductDetail
 
 **Files:**
+
 - Modify: `src/pages/Product/Product.tsx` (top section changes below)
 - Delete: `src/hooks/useProductDetail/` (entire directory)
 
 **Interfaces:**
+
 - Consumes: `productQueries.detail` from `@/features/products/queries`; `useParams` from `react-router`.
 - Produces: `useProductDetail` gone from the codebase.
 
@@ -1452,10 +1481,12 @@ git commit -m "refactor: Product page uses declarative detail query"
 ### Task 11: Checkout API extraction
 
 **Files:**
+
 - Create: `src/features/checkout/api.ts`
 - Modify: `src/pages/Checkout/hooks/useCheckout.ts`
 
 **Interfaces:**
+
 - Consumes: `apiClient` from `@/shared/api/client`; `CheckoutAddressFormData` from the form component.
 - Produces: `placeOrder(payload: PlaceOrderPayload): Promise<PlaceOrderResponse>` with `PlaceOrderPayload { userId: number; products: { id: number; quantity: number }[]; address: CheckoutAddressFormData }` and `PlaceOrderResponse { id: number }` from `@/features/checkout/api`. Task 17 adds cart clearing to this flow.
 
@@ -1478,11 +1509,11 @@ export interface PlaceOrderResponse {
 }
 
 export async function placeOrder(
-  payload: PlaceOrderPayload
+  payload: PlaceOrderPayload,
 ): Promise<PlaceOrderResponse> {
   const { data } = await apiClient.post<PlaceOrderResponse>(
     "/carts/add",
-    payload
+    payload,
   );
   return data;
 }
@@ -1491,32 +1522,33 @@ export async function placeOrder(
 - [ ] **Step 2: Use it in useCheckout**
 
 In `src/pages/Checkout/hooks/useCheckout.ts`:
+
 - Remove `import axios from "axios";` and `import { config } from "../../../configs/environment";`.
 - Add `import { placeOrder } from "@/features/checkout/api";`.
 - Delete the local `placeOrder` function (lines 55–66 of the current file).
 - Change the mutation to:
 
 ```ts
-  const { mutate: placeOrderMutate, isPending: isPlaceOrderLoading } =
-    useMutation({
-      mutationFn: () => {
-        if (!checkoutAddress) {
-          throw new Error("Delivery Address is Missing");
-        }
+const { mutate: placeOrderMutate, isPending: isPlaceOrderLoading } =
+  useMutation({
+    mutationFn: () => {
+      if (!checkoutAddress) {
+        throw new Error("Delivery Address is Missing");
+      }
 
-        return placeOrder({
-          userId: 1,
-          products: cart.items.map((item) => ({
-            id: item.id,
-            quantity: item.quantity,
-          })),
-          address: checkoutAddress,
-        });
-      },
-      onSuccess: () => {
-        goToOrderSuccess();
-      },
-    });
+      return placeOrder({
+        userId: 1,
+        products: cart.items.map((item) => ({
+          id: item.id,
+          quantity: item.quantity,
+        })),
+        address: checkoutAddress,
+      });
+    },
+    onSuccess: () => {
+      goToOrderSuccess();
+    },
+  });
 ```
 
 - [ ] **Step 3: Verify**
@@ -1542,12 +1574,14 @@ Restructure procedure for Tasks 12–14: move with `git mv` (history preserved),
 ### Task 12: App shell (`src/app/`)
 
 **Files:**
+
 - Create: `src/app/App.tsx`, `src/app/router.tsx`, `src/app/providers.tsx`, `src/app/queryClient.ts`
 - Move: `src/Layouts/MainLayout/*` → `src/app/layouts/MainLayout/*`
 - Modify: `src/main.tsx`
 - Delete: `src/App.tsx`, `src/Layouts/`
 
 **Interfaces:**
+
 - Produces: `src/app/router.tsx` exports `routes` (the route object array — Task 19's tests build a memory router from it) and `router`; `src/app/providers.tsx` exports `AppProviders`; `src/app/queryClient.ts` exports `queryClient`. `src/main.tsx` renders `<App />` only.
 
 - [ ] **Step 1: Install devtools**
@@ -1659,7 +1693,7 @@ import App from "./app/App";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <App />
-  </StrictMode>
+  </StrictMode>,
 );
 ```
 
@@ -1688,37 +1722,38 @@ git commit -m "refactor: extract app shell (providers, router, queryClient, layo
 
 **Files (move map — `git mv` each):**
 
-| From | To |
-|---|---|
-| `src/types/product.type.ts` | `src/features/products/types.ts` |
-| `src/components/ProductCard/` | `src/features/products/components/ProductCard/` |
-| `src/components/ProductsList/` | `src/features/products/components/ProductsList/` |
-| `src/components/CategoryMenu/` | `src/features/products/components/CategoryMenu/` |
-| `src/components/ProductDetailInfo/` | `src/features/products/components/ProductDetailInfo/` |
-| `src/components/ProductImageGallery/` | `src/features/products/components/ProductImageGallery/` |
-| `src/components/ReviewCard/` | `src/features/products/components/ReviewCard/` |
-| `src/components/RatingBreakdown/` | `src/features/products/components/RatingBreakdown/` |
-| `src/components/StarReview/` | `src/shared/components/StarReview/` |
-| `src/components/Button/` | `src/shared/components/Button/` |
-| `src/components/Input/` | `src/shared/components/Input/` |
-| `src/components/RadioInput/` | `src/shared/components/RadioInput/` |
-| `src/components/Modal/` | `src/shared/components/Modal/` |
-| `src/components/Pagination/` | `src/shared/components/Pagination/` |
-| `src/components/ImageZoom/` | `src/shared/components/ImageZoom/` |
-| `src/components/SwiperCarousel/` | `src/shared/components/SwiperCarousel/` |
-| `src/components/CountdownTimer/` | `src/shared/components/CountdownTimer/` |
-| `src/components/FeatureCard/` | `src/shared/components/FeatureCard/` |
-| `src/components/Header/` | `src/shared/components/Header/` |
-| `src/components/Footer/` | `src/shared/components/Footer/` |
-| `src/utils/price.utlls.ts` | `src/shared/utils/price.utils.ts` (typo fixed) |
-| `src/utils/pagination.utils.ts` | `src/shared/utils/pagination.utils.ts` |
-| `src/utils/price.utils.test.ts` | `src/shared/utils/price.utils.test.ts` |
-| `src/utils/pagination.utils.test.ts` | `src/shared/utils/pagination.utils.test.ts` |
-| `src/types/generic.type.ts` | `src/shared/types/generic.type.ts` |
-| `src/types/global.d.ts` | `src/shared/types/global.d.ts` |
-| `src/hooks/useProductRoute/useProductRoute.tsx` | `src/shared/hooks/useProductRoute.tsx` |
+| From                                            | To                                                      |
+| ----------------------------------------------- | ------------------------------------------------------- |
+| `src/types/product.type.ts`                     | `src/features/products/types.ts`                        |
+| `src/components/ProductCard/`                   | `src/features/products/components/ProductCard/`         |
+| `src/components/ProductsList/`                  | `src/features/products/components/ProductsList/`        |
+| `src/components/CategoryMenu/`                  | `src/features/products/components/CategoryMenu/`        |
+| `src/components/ProductDetailInfo/`             | `src/features/products/components/ProductDetailInfo/`   |
+| `src/components/ProductImageGallery/`           | `src/features/products/components/ProductImageGallery/` |
+| `src/components/ReviewCard/`                    | `src/features/products/components/ReviewCard/`          |
+| `src/components/RatingBreakdown/`               | `src/features/products/components/RatingBreakdown/`     |
+| `src/components/StarReview/`                    | `src/shared/components/StarReview/`                     |
+| `src/components/Button/`                        | `src/shared/components/Button/`                         |
+| `src/components/Input/`                         | `src/shared/components/Input/`                          |
+| `src/components/RadioInput/`                    | `src/shared/components/RadioInput/`                     |
+| `src/components/Modal/`                         | `src/shared/components/Modal/`                          |
+| `src/components/Pagination/`                    | `src/shared/components/Pagination/`                     |
+| `src/components/ImageZoom/`                     | `src/shared/components/ImageZoom/`                      |
+| `src/components/SwiperCarousel/`                | `src/shared/components/SwiperCarousel/`                 |
+| `src/components/CountdownTimer/`                | `src/shared/components/CountdownTimer/`                 |
+| `src/components/FeatureCard/`                   | `src/shared/components/FeatureCard/`                    |
+| `src/components/Header/`                        | `src/shared/components/Header/`                         |
+| `src/components/Footer/`                        | `src/shared/components/Footer/`                         |
+| `src/utils/price.utlls.ts`                      | `src/shared/utils/price.utils.ts` (typo fixed)          |
+| `src/utils/pagination.utils.ts`                 | `src/shared/utils/pagination.utils.ts`                  |
+| `src/utils/price.utils.test.ts`                 | `src/shared/utils/price.utils.test.ts`                  |
+| `src/utils/pagination.utils.test.ts`            | `src/shared/utils/pagination.utils.test.ts`             |
+| `src/types/generic.type.ts`                     | `src/shared/types/generic.type.ts`                      |
+| `src/types/global.d.ts`                         | `src/shared/types/global.d.ts`                          |
+| `src/hooks/useProductRoute/useProductRoute.tsx` | `src/shared/hooks/useProductRoute.tsx`                  |
 
 **Interfaces:**
+
 - Produces: `@/features/products/types` exports Product/Category/FetchProductsResponse; `@/shared/utils/price.utils` exports `calculateOriginalPrice`; `@/shared/hooks/useProductRoute` default-exports the hook. All import paths across `src/` updated to `@/...` for moved modules.
 
 - [ ] **Step 1: Execute the moves**
@@ -1760,29 +1795,30 @@ git commit -m "refactor: move products feature and shared modules into place"
 
 **Files (move map — `git mv` each):**
 
-| From | To |
-|---|---|
-| `src/contexts/cart/CartContext.tsx` | `src/features/cart/store/CartContext.tsx` |
-| `src/contexts/cart/CartProvider.tsx` | `src/features/cart/store/CartProvider.tsx` |
-| `src/hooks/useCart/useCart.tsx` | `src/features/cart/useCart.ts` |
-| `src/components/CartTable/` | `src/features/cart/components/CartTable/` |
-| `src/components/CartSummary/` | `src/features/cart/components/CartSummary/` |
-| `src/components/AddToCartModalContent/` | `src/features/cart/components/AddToCartModalContent/` |
-| `src/components/SummaryOrderItem/` | `src/features/cart/components/SummaryOrderItem/` |
-| `src/components/CheckoutAddressBox/` | `src/features/checkout/components/CheckoutAddressBox/` |
-| `src/components/CheckoutAddressForm/` | `src/features/checkout/components/CheckoutAddressForm/` |
-| `src/components/CheckoutDeliveryBox/` | `src/features/checkout/components/CheckoutDeliveryBox/` |
-| `src/components/CheckoutPaymentBox/` | `src/features/checkout/components/CheckoutPaymentBox/` |
-| `src/components/BillingSummary/` | `src/features/checkout/components/BillingSummary/` |
-| `src/components/DeliveryOption/` | `src/features/checkout/components/DeliveryOption/` |
-| `src/components/PaymentOption/` | `src/features/checkout/components/PaymentOption/` |
-| `src/components/SummaryOrder/` | `src/features/checkout/components/SummaryOrder/` |
-| `src/pages/Checkout/hooks/useCheckout.ts` | `src/features/checkout/useCheckout.ts` |
+| From                                                                                | To                                                                         |
+| ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `src/contexts/cart/CartContext.tsx`                                                 | `src/features/cart/store/CartContext.tsx`                                  |
+| `src/contexts/cart/CartProvider.tsx`                                                | `src/features/cart/store/CartProvider.tsx`                                 |
+| `src/hooks/useCart/useCart.tsx`                                                     | `src/features/cart/useCart.ts`                                             |
+| `src/components/CartTable/`                                                         | `src/features/cart/components/CartTable/`                                  |
+| `src/components/CartSummary/`                                                       | `src/features/cart/components/CartSummary/`                                |
+| `src/components/AddToCartModalContent/`                                             | `src/features/cart/components/AddToCartModalContent/`                      |
+| `src/components/SummaryOrderItem/`                                                  | `src/features/cart/components/SummaryOrderItem/`                           |
+| `src/components/CheckoutAddressBox/`                                                | `src/features/checkout/components/CheckoutAddressBox/`                     |
+| `src/components/CheckoutAddressForm/`                                               | `src/features/checkout/components/CheckoutAddressForm/`                    |
+| `src/components/CheckoutDeliveryBox/`                                               | `src/features/checkout/components/CheckoutDeliveryBox/`                    |
+| `src/components/CheckoutPaymentBox/`                                                | `src/features/checkout/components/CheckoutPaymentBox/`                     |
+| `src/components/BillingSummary/`                                                    | `src/features/checkout/components/BillingSummary/`                         |
+| `src/components/DeliveryOption/`                                                    | `src/features/checkout/components/DeliveryOption/`                         |
+| `src/components/PaymentOption/`                                                     | `src/features/checkout/components/PaymentOption/`                          |
+| `src/components/SummaryOrder/`                                                      | `src/features/checkout/components/SummaryOrder/`                           |
+| `src/pages/Checkout/hooks/useCheckout.ts`                                           | `src/features/checkout/useCheckout.ts`                                     |
 | `src/components/CheckoutAddressForm/checkoutAddress.schema.ts` (moves with its dir) | `src/features/checkout/schema.ts` (then `git mv` out of the component dir) |
-| `src/consts/checkout.const.ts` | `src/features/checkout/consts.ts` |
-| `src/types/checkout.type.ts` | `src/features/checkout/types.ts` |
+| `src/consts/checkout.const.ts`                                                      | `src/features/checkout/consts.ts`                                          |
+| `src/types/checkout.type.ts`                                                        | `src/features/checkout/types.ts`                                           |
 
 **Interfaces:**
+
 - Produces: `@/features/cart/useCart` exports `useCart`; `@/features/checkout/schema` exports `checkoutAddressSchema` + `CheckoutAddressFormData`; `@/features/checkout/useCheckout` default-exports the hook; `@/features/checkout/consts` exports `deliveryOptions`/`paymentOptions`; `@/features/checkout/types` exports `DeliveryOption`/`PaymentOption`. Legacy dirs `src/contexts/`, `src/hooks/`, `src/consts/`, `src/components/`, `src/configs/`, `src/types/`, `src/utils/` no longer exist.
 
 - [ ] **Step 1: Execute the moves**
@@ -1828,11 +1864,13 @@ git commit -m "refactor: move cart and checkout features into place"
 ### Task 15: Extract cartReducer + implement CLEAR_CART (TDD)
 
 **Files:**
+
 - Create: `src/features/cart/store/cartReducer.ts`
 - Test: `src/features/cart/store/cartReducer.test.ts`
 - Modify: `src/features/cart/store/CartProvider.tsx`, `src/features/cart/store/CartContext.tsx`
 
 **Interfaces:**
+
 - Consumes: `CartActionTypes`, `CartItem`, `CartState` from `./CartContext`.
 - Produces: `cartReducer(state: CartState, action: CartAction): CartState` and `type CartAction` exported from `@/features/cart/store/cartReducer`; `CartContextProps` gains `clearCart: () => void`; `CartProvider` provides it. Task 17 consumes `clearCart`.
 
@@ -1920,7 +1958,7 @@ export type CartAction =
 
 export const cartReducer = (
   state: CartState,
-  action: CartAction
+  action: CartAction,
 ): CartState => {
   switch (action.type) {
     case CartActionTypes.ADD_TO_CART: {
@@ -1940,7 +1978,7 @@ export const cartReducer = (
           items: state.items.map((item) =>
             item.id === id
               ? { ...item, quantity: item.quantity + quantity }
-              : item
+              : item,
           ),
         };
       }
@@ -1965,7 +2003,7 @@ export const cartReducer = (
         items: state.items.map((item) =>
           item.id === action.payload.id
             ? { ...item, quantity: action.payload.quantity }
-            : item
+            : item,
         ),
       };
     }
@@ -1995,7 +2033,12 @@ Replace the entire contents of `src/features/cart/store/CartProvider.tsx` with:
 
 ```tsx
 import React, { useReducer } from "react";
-import { CartActionTypes, CartContext, CartItem, CartState } from "./CartContext";
+import {
+  CartActionTypes,
+  CartContext,
+  CartItem,
+  CartState,
+} from "./CartContext";
 import { cartReducer } from "./cartReducer";
 
 const initialState: CartState = {
@@ -2051,11 +2094,13 @@ git commit -m "feat: extract cartReducer and implement CLEAR_CART"
 ### Task 16: Cart localStorage persistence (TDD)
 
 **Files:**
+
 - Create: `src/features/cart/store/cartStorage.ts`
 - Test: `src/features/cart/store/cartStorage.test.ts`
 - Modify: `src/features/cart/store/CartProvider.tsx`
 
 **Interfaces:**
+
 - Produces: `loadCartState(): CartState` and `saveCartState(state: CartState): void` from `@/features/cart/store/cartStorage`, storage key `"ecommerce-cart:v1"`. `CartProvider` initializes from storage and writes through on every change.
 
 - [ ] **Step 1: Write the failing tests**
@@ -2067,9 +2112,7 @@ import { CartState } from "./CartContext";
 import { CART_STORAGE_KEY, loadCartState, saveCartState } from "./cartStorage";
 
 const sample: CartState = {
-  items: [
-    { id: 1, title: "Widget", price: 10, quantity: 2, image: "/w.png" },
-  ],
+  items: [{ id: 1, title: "Widget", price: 10, quantity: 2, image: "/w.png" }],
 };
 
 describe("cartStorage", () => {
@@ -2145,15 +2188,16 @@ Expected: 4 tests PASS.
 - [ ] **Step 5: Wire persistence into the provider**
 
 In `src/features/cart/store/CartProvider.tsx`:
+
 - Add imports: `useEffect` from react, `loadCartState, saveCartState` from `./cartStorage`.
 - Change the reducer init to lazy-load and add write-through:
 
 ```tsx
-  const [cart, dispatch] = useReducer(cartReducer, undefined, loadCartState);
+const [cart, dispatch] = useReducer(cartReducer, undefined, loadCartState);
 
-  useEffect(() => {
-    saveCartState(cart);
-  }, [cart]);
+useEffect(() => {
+  saveCartState(cart);
+}, [cart]);
 ```
 
 (Remove the now-unused `initialState` constant.)
@@ -2173,10 +2217,12 @@ git commit -m "feat: persist cart to localStorage"
 ### Task 17: Clear cart after successful order + useCheckout tests
 
 **Files:**
+
 - Modify: `src/features/checkout/useCheckout.ts`
 - Test: `src/features/checkout/useCheckout.test.tsx`
 
 **Interfaces:**
+
 - Consumes: `clearCart` from `useCart()` (Task 15), `placeOrder` (Task 11), MSW POST handler (Task 4).
 - Produces: after a successful place-order mutation the cart is cleared and the router navigates to `/order/success`.
 
@@ -2213,12 +2259,12 @@ describe("useCheckout", () => {
         items: [
           { id: 1, title: "Widget", price: 10, quantity: 2, image: "/w.png" },
         ],
-      })
+      }),
     );
 
     const { result } = renderHook(
       () => ({ checkout: useCheckout(), cart: useCart() }),
-      { wrapper }
+      { wrapper },
     );
 
     expect(result.current.cart.cart.items).toHaveLength(1);
@@ -2236,9 +2282,7 @@ describe("useCheckout", () => {
       result.current.checkout.onPlaceOrder();
     });
 
-    await waitFor(() =>
-      expect(result.current.cart.cart.items).toHaveLength(0)
-    );
+    await waitFor(() => expect(result.current.cart.cart.items).toHaveLength(0));
   });
 
   it("errors and keeps the cart when no address is set", async () => {
@@ -2248,12 +2292,12 @@ describe("useCheckout", () => {
         items: [
           { id: 1, title: "Widget", price: 10, quantity: 2, image: "/w.png" },
         ],
-      })
+      }),
     );
 
     const { result } = renderHook(
       () => ({ checkout: useCheckout(), cart: useCart() }),
-      { wrapper }
+      { wrapper },
     );
 
     act(() => {
@@ -2261,7 +2305,7 @@ describe("useCheckout", () => {
     });
 
     await waitFor(() =>
-      expect(result.current.checkout.isPlaceOrderLoading).toBe(false)
+      expect(result.current.checkout.isPlaceOrderLoading).toBe(false),
     );
     expect(result.current.cart.cart.items).toHaveLength(1);
   });
@@ -2278,6 +2322,7 @@ Expected: FAIL — cart still has 1 item after the mutation (clearCart not calle
 - [ ] **Step 3: Implement**
 
 In `src/features/checkout/useCheckout.ts`:
+
 - Destructure `clearCart` as well: `const { cart, clearCart } = useCart();`
 - Change the mutation's `onSuccess` to:
 
@@ -2308,10 +2353,12 @@ git commit -m "feat: clear cart after successful order"
 ### Task 18: Inline error states + route error boundary
 
 **Files:**
+
 - Create: `src/shared/components/ErrorMessage/ErrorMessage.tsx`, `src/app/RouteErrorFallback.tsx`
 - Modify: `src/app/router.tsx`, `src/pages/Home/Home.tsx`, `src/pages/Category/Category.tsx`, `src/pages/Product/Product.tsx`
 
 **Interfaces:**
+
 - Produces: `ErrorMessage({ message?: string })` shared component; root route gets `errorElement: <RouteErrorFallback />`; the three query-driven pages render `ErrorMessage` on query error.
 
 - [ ] **Step 1: Create ErrorMessage**
@@ -2373,13 +2420,13 @@ with the import `import RouteErrorFallback from "./RouteErrorFallback";`.
 - `src/pages/Product/Product.tsx`: destructure `isError` from the detail `useQuery`; after the `isLoading` block, change the `!productDetail` early return to:
 
 ```tsx
-  if (isError || !productDetail) {
-    return (
-      <div className="container">
-        <ErrorMessage message="We couldn't load this product. Please try again." />
-      </div>
-    );
-  }
+if (isError || !productDetail) {
+  return (
+    <div className="container">
+      <ErrorMessage message="We couldn't load this product. Please try again." />
+    </div>
+  );
+}
 ```
 
 - `src/pages/Home/Home.tsx`: destructure `isError: isBestProductsError` from the list query and `isError: isCategoryProductsError` from the byCategory query. In the deals section render `<ErrorMessage />` when `isBestProductsError` (in place of the list), and in the category section render `<ErrorMessage />` when `isCategoryProductsError`.
@@ -2402,10 +2449,12 @@ git commit -m "feat: inline query error states and route error boundary"
 ### Task 19: Integration tests (Home, Category, Cart, Checkout)
 
 **Files:**
+
 - Create: `src/test/renderRoute.tsx`
 - Test: `src/pages/Home/Home.test.tsx`, `src/pages/Category/Category.test.tsx`, `src/pages/Cart/Cart.test.tsx`, `src/pages/Checkout/Checkout.test.tsx`
 
 **Interfaces:**
+
 - Consumes: `routes` from `@/app/router` (Task 12), MSW fixtures/handlers (Task 4), `CART_STORAGE_KEY` (Task 16).
 - Produces: `renderRoute(initialPath: string)` helper that renders the real route tree in a memory router with fresh providers.
 
@@ -2434,7 +2483,7 @@ export function renderRoute(initialPath: string) {
         <CartProvider>
           <RouterProvider router={router} />
         </CartProvider>
-      </QueryClientProvider>
+      </QueryClientProvider>,
     ),
   };
 }
@@ -2453,9 +2502,7 @@ describe("Home page", () => {
     renderRoute("/");
 
     expect(await screen.findByText("Product 1")).toBeInTheDocument();
-    expect(
-      await screen.findByText("beauty product 1")
-    ).toBeInTheDocument();
+    expect(await screen.findByText("beauty product 1")).toBeInTheDocument();
   });
 });
 ```
@@ -2477,13 +2524,11 @@ describe("Category page", () => {
     expect(await screen.findByText("beauty product 1")).toBeInTheDocument();
 
     await user.click(screen.getByText("Fragrances"));
-    expect(
-      await screen.findByText("fragrances product 1")
-    ).toBeInTheDocument();
+    expect(await screen.findByText("fragrances product 1")).toBeInTheDocument();
 
     await user.click(screen.getByText("2"));
     expect(
-      await screen.findByText("fragrances product 21")
+      await screen.findByText("fragrances product 21"),
     ).toBeInTheDocument();
   });
 });
@@ -2508,16 +2553,14 @@ function seedCart() {
       items: [
         { id: 1, title: "Widget", price: 10, quantity: 1, image: "/w.png" },
       ],
-    })
+    }),
   );
 }
 
 describe("Cart page", () => {
   it("shows the empty state when there are no items", async () => {
     renderRoute("/cart");
-    expect(
-      await screen.findByText("Your Cart is Empty")
-    ).toBeInTheDocument();
+    expect(await screen.findByText("Your Cart is Empty")).toBeInTheDocument();
   });
 
   it("updates quantity and total", async () => {
@@ -2538,9 +2581,7 @@ describe("Cart page", () => {
     renderRoute("/cart");
 
     await user.click(await screen.findByRole("button", { name: "×" }));
-    expect(
-      await screen.findByText("Your Cart is Empty")
-    ).toBeInTheDocument();
+    expect(await screen.findByText("Your Cart is Empty")).toBeInTheDocument();
   });
 });
 ```
@@ -2564,35 +2605,28 @@ describe("Checkout page", () => {
         items: [
           { id: 1, title: "Widget", price: 10, quantity: 2, image: "/w.png" },
         ],
-      })
+      }),
     );
 
     const { router } = renderRoute("/checkout");
 
-    await user.type(
-      screen.getByPlaceholderText("Enter Address"),
-      "1 Main St"
-    );
+    await user.type(screen.getByPlaceholderText("Enter Address"), "1 Main St");
     await user.type(
       screen.getByPlaceholderText("Enter Email"),
-      "jane@example.com"
+      "jane@example.com",
     );
     await user.type(
       screen.getByPlaceholderText("Enter Phone Number"),
-      "0812345678"
+      "0812345678",
     );
     await user.click(screen.getByRole("button", { name: "Submit" }));
 
-    await user.click(
-      screen.getByRole("button", { name: /place order/i })
-    );
+    await user.click(screen.getByRole("button", { name: /place order/i }));
 
     await waitFor(() =>
-      expect(router.state.location.pathname).toBe("/order/success")
+      expect(router.state.location.pathname).toBe("/order/success"),
     );
-    expect(
-      screen.getByText("Order Placed Successfully!")
-    ).toBeInTheDocument();
+    expect(screen.getByText("Order Placed Successfully!")).toBeInTheDocument();
   });
 });
 ```
@@ -2616,10 +2650,12 @@ git commit -m "test: integration tests for Home, Category, Cart, and Checkout"
 ### Task 20: Final sweep — README, dead code, full verification
 
 **Files:**
+
 - Modify: `README.md` (full rewrite below)
 - Modify: any files flagged by the checks below
 
 **Interfaces:**
+
 - Produces: a clean, fully verified branch ready for review/merge.
 
 - [ ] **Step 1: Dead-code and consistency checks**
@@ -2657,7 +2693,7 @@ mock checkout flow.
 
 Requires Node ≥22.22.
 
-​```bash
+​`bash
 npm install
 npm run dev        # start dev server
 npm run test       # run tests once
@@ -2666,13 +2702,13 @@ npm run lint       # ESLint
 npm run format     # Prettier
 npm run typecheck  # tsc
 npm run build      # production build
-​```
+​`
 
 Configuration: `.env` sets `VITE_API_BASE_URL` (defaults to https://dummyjson.com).
 
 ## Structure
 
-​```
+​`
 src/
   app/        # providers, router, query client, layout
   pages/      # thin route components
@@ -2680,7 +2716,7 @@ src/
   shared/     # generic UI, api client, utils, hooks, types
   styles/     # global SCSS
   test/       # test setup, MSW server/handlers, render helpers
-​```
+​`
 ```
 
 (Remove the zero-width characters around the code fences — they're only there so this plan's own fence doesn't break.)

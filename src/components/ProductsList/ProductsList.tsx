@@ -39,7 +39,7 @@ const ProductsList: React.FC<ProductsListProps> = ({
               onProductClick={onProductClick}
             />
           </div>
-        )
+        ),
       )}
     </>
   );

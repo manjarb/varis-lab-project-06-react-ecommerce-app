@@ -27,7 +27,7 @@ const Product: React.FC = () => {
         image: productDetail.thumbnail,
         originalPrice: calculateOriginalPrice(
           productDetail.price,
-          productDetail.discountPercentage
+          productDetail.discountPercentage,
         ),
       });
       onOpenModal();

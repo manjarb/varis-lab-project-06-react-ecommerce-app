@@ -13,7 +13,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ onIconClick }) => {
 
   const totalItems = useMemo(
     () => cart.items.reduce((sum, item) => sum + item.quantity, 0),
-    [cart.items]
+    [cart.items],
   );
 
   return (

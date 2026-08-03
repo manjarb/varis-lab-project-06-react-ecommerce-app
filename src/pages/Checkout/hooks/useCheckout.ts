@@ -24,14 +24,14 @@ const useCheckout = () => {
   const selectedDeliveryOption = useMemo(
     () =>
       deliveryOptions.find((option) => option.id === selectedDeliveryOptionId),
-    [selectedDeliveryOptionId]
+    [selectedDeliveryOptionId],
   );
 
   // Compute billing summary data
   const billingSummary = useMemo(() => {
     const subtotal = cart.items.reduce(
       (sum, item) => sum + item.price * item.quantity,
-      0
+      0,
     );
 
     const shipping = selectedDeliveryOption?.price || 0; // Get price of the selected delivery option
@@ -55,7 +55,7 @@ const useCheckout = () => {
   const placeOrder = async (
     userId: number,
     cartItems: { id: number; quantity: number }[],
-    address: CheckoutAddressFormData
+    address: CheckoutAddressFormData,
   ) => {
     const response = await axios.post(`${config.baseURL}/carts/add`, {
       userId,
@@ -78,7 +78,7 @@ const useCheckout = () => {
             id: item.id,
             quantity: item.quantity,
           })),
-          checkoutAddress
+          checkoutAddress,
         );
       },
       onSuccess: () => {

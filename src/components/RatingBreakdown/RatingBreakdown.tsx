@@ -16,7 +16,7 @@ const RatingBreakdown: React.FC<RatingBreakdownProps> = ({ reviews }) => {
     .map((_, index) => {
       const stars = 5 - index; // Descending from 5 to 1
       const count = reviews.filter(
-        (review) => Math.round(review.rating / 2) === stars
+        (review) => Math.round(review.rating / 2) === stars,
       ).length;
 
       const percentage = totalReviews ? (count / totalReviews) * 100 : 0;

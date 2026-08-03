@@ -15,7 +15,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {error && <p className={`${styles.error} fs-12 mt-5`}>{error}</p>}
       </div>
     );
-  }
+  },
 );
 
 Input.displayName = "Input";

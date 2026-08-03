@@ -12,7 +12,7 @@ import CategoryBanner from "./components/CategoryBanner/CategoryBanner";
 
 const Category: React.FC = () => {
   const [currentCategory, setCurrentCategory] = useState<CategoryType | null>(
-    null
+    null,
   );
   const {
     fetchCategories,
@@ -93,7 +93,7 @@ const Category: React.FC = () => {
                       currentPage={page}
                       totalPages={calculateTotalPages(
                         pagination?.total,
-                        defaultLimit
+                        defaultLimit,
                       )}
                       onPageChange={handlePageChange}
                     />

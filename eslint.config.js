@@ -1,31 +1,39 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
-import importPlugin from 'eslint-plugin-import'
+import js from "@eslint/js";
+import globals from "globals";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
+import tseslint from "typescript-eslint";
+import importX from "eslint-plugin-import-x";
+import pluginQuery from "@tanstack/eslint-plugin-query";
+import prettierConfig from "eslint-config-prettier";
 
 export default tseslint.config(
-  { ignores: ['dist'] },
+  { ignores: ["dist", "coverage"] },
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ['**/*.{ts,tsx}'],
+    extends: [
+      js.configs.recommended,
+      ...tseslint.configs.recommended,
+      ...pluginQuery.configs["flat/recommended"],
+    ],
+    files: ["**/*.{ts,tsx}"],
     languageOptions: {
-      ecmaVersion: 2020,
+      ecmaVersion: 2022,
       globals: globals.browser,
     },
     plugins: {
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
-      'import': importPlugin,
+      "react-hooks": reactHooks,
+      "react-refresh": reactRefresh,
+      "import-x": importX,
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
+      "react-refresh/only-export-components": [
+        "warn",
         { allowConstantExport: true },
       ],
-      'import/order': 'error',
+      "import-x/order": "error",
     },
   },
-)
+  prettierConfig,
+);

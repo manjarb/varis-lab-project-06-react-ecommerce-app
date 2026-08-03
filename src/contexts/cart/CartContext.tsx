@@ -28,5 +28,5 @@ export enum CartActionTypes {
 }
 
 export const CartContext = createContext<CartContextProps | undefined>(
-  undefined
+  undefined,
 );
