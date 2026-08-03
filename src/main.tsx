@@ -8,7 +8,14 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { CartProvider } from "./contexts/cart/CartProvider.tsx";
 
 // Create a QueryClient instance
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000,
+      retry: 1,
+    },
+  },
+});
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
