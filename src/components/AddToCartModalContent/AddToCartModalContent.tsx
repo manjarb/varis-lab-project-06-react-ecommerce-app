@@ -1,6 +1,6 @@
 import React from "react";
-import Button from "../Button/Button";
-import Modal from "../Modal/Modal";
+import Button from "@/shared/components/Button/Button";
+import Modal from "@/shared/components/Modal/Modal";
 
 interface AddToCartModalContentProps {
   isOpen: boolean;

@@ -1,7 +1,7 @@
 import React from "react";
-import { Product } from "../../types/product.type";
-import ProductCard from "../ProductCard/ProductCard";
-import { calculateOriginalPrice } from "../../utils/price.utlls";
+import { Product } from "@/features/products/types";
+import ProductCard from "@/features/products/components/ProductCard/ProductCard";
+import { calculateOriginalPrice } from "@/shared/utils/price.utils";
 
 interface ProductsListProps {
   products: Product[] | undefined;

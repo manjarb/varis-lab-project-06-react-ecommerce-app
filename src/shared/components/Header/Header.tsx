@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router";
-import CartSummary from "../CartSummary/CartSummary";
-import useProductRoute from "../../hooks/useProductRoute/useProductRoute";
+import CartSummary from "@/components/CartSummary/CartSummary";
+import useProductRoute from "@/shared/hooks/useProductRoute";
 
 const Header: React.FC = () => {
   const { goToCartSummary } = useProductRoute();

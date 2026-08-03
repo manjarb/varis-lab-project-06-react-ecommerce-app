@@ -10,14 +10,14 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { useQuery } from "@tanstack/react-query";
 import styles from "./Home.module.scss";
 import Banner from "./components/Banner/Banner";
-import CountdownTimer from "@/components/CountdownTimer/CountdownTimer";
-import ImageZoom from "@/components/ImageZoom/ImageZoom";
-import CategoryMenu from "@/components/CategoryMenu/CategoryMenu";
-import ProductsList from "@/components/ProductsList/ProductsList";
-import FeatureCard from "@/components/FeatureCard/FeatureCard";
-import useProductRoute from "@/hooks/useProductRoute/useProductRoute";
+import CountdownTimer from "@/shared/components/CountdownTimer/CountdownTimer";
+import ImageZoom from "@/shared/components/ImageZoom/ImageZoom";
+import CategoryMenu from "@/features/products/components/CategoryMenu/CategoryMenu";
+import ProductsList from "@/features/products/components/ProductsList/ProductsList";
+import FeatureCard from "@/shared/components/FeatureCard/FeatureCard";
+import useProductRoute from "@/shared/hooks/useProductRoute";
 import { productQueries } from "@/features/products/queries";
-import { Category as CategoryType } from "@/types/product.type";
+import { Category as CategoryType } from "@/features/products/types";
 
 const PRODUCTS_LIST_LIMIT = 12;
 

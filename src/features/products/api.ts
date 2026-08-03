@@ -1,6 +1,10 @@
 import { apiClient } from "@/shared/api/client";
-import { Category, FetchProductsResponse, Product } from "@/types/product.type";
-import { calculateOffset } from "@/utils/pagination.utils";
+import {
+  Category,
+  FetchProductsResponse,
+  Product,
+} from "@/features/products/types";
+import { calculateOffset } from "@/shared/utils/pagination.utils";
 
 export interface ProductListParams {
   page?: number;

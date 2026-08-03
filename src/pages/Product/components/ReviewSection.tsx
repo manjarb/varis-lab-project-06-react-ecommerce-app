@@ -1,8 +1,8 @@
 import React from "react";
-import { ProductReview } from "../../../types/product.type";
-import StarReview from "../../../components/StarReview/StarReview";
-import RatingBreakdown from "../../../components/RatingBreakdown/RatingBreakdown";
-import ReviewCard from "../../../components/ReviewCard/ReviewCard";
+import { ProductReview } from "@/features/products/types";
+import StarReview from "@/shared/components/StarReview/StarReview";
+import RatingBreakdown from "@/features/products/components/RatingBreakdown/RatingBreakdown";
+import ReviewCard from "@/features/products/components/ReviewCard/ReviewCard";
 
 interface ReviewSectionProps {
   rating: number;

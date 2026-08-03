@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import StarReview from "../StarReview/StarReview";
+import StarReview from "@/shared/components/StarReview/StarReview";
 
 interface ProductCardProps {
   productId: number;

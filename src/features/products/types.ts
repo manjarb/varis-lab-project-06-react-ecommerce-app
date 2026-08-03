@@ -1,4 +1,4 @@
-import { Pagination } from "./generic.type";
+import { Pagination } from "@/shared/types/generic.type";
 
 export interface ProductDimensions {
   width: number;

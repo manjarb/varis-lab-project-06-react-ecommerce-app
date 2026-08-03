@@ -1,4 +1,8 @@
-import { Category, FetchProductsResponse, Product } from "@/types/product.type";
+import {
+  Category,
+  FetchProductsResponse,
+  Product,
+} from "@/features/products/types";
 
 export function makeProduct(overrides: Partial<Product> = {}): Product {
   return {

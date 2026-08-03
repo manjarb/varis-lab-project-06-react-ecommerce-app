@@ -1,9 +1,9 @@
 import React, { useMemo } from "react";
-import { useCart } from "../../hooks/useCart/useCart";
-import CategoryBanner from "../Category/components/CategoryBanner/CategoryBanner";
-import CartTable from "../../components/CartTable/CartTable";
-import Button from "../../components/Button/Button";
-import useProductRoute from "../../hooks/useProductRoute/useProductRoute";
+import { useCart } from "@/hooks/useCart/useCart";
+import CategoryBanner from "@/pages/Category/components/CategoryBanner/CategoryBanner";
+import CartTable from "@/components/CartTable/CartTable";
+import Button from "@/shared/components/Button/Button";
+import useProductRoute from "@/shared/hooks/useProductRoute";
 
 const Cart: React.FC = () => {
   const { cart, removeFromCart, updateQuantity } = useCart();

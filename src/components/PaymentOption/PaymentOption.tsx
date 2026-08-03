@@ -1,5 +1,5 @@
 import React from "react";
-import RadioInput from "../RadioInput/RadioInput";
+import RadioInput from "@/shared/components/RadioInput/RadioInput";
 
 interface PaymentOptionProps {
   id: number;

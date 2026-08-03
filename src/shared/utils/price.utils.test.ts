@@ -1,4 +1,4 @@
-import { calculateOriginalPrice } from "./price.utlls";
+import { calculateOriginalPrice } from "./price.utils";
 
 describe("calculateOriginalPrice", () => {
   it("computes the pre-discount price", () => {

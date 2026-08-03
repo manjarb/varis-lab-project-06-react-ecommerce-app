@@ -1,7 +1,7 @@
 import React from "react";
 import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
-import StarReview from "../StarReview/StarReview";
-import Button from "../Button/Button";
+import StarReview from "@/shared/components/StarReview/StarReview";
+import Button from "@/shared/components/Button/Button";
 
 interface ProductDetailInfoProps {
   title: string;

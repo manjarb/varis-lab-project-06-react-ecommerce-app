@@ -1,8 +1,8 @@
 import React from "react";
 import dayjs from "dayjs";
 
-import StarReview from "../StarReview/StarReview";
 import styles from "./ReviewCard.module.scss";
+import StarReview from "@/shared/components/StarReview/StarReview";
 
 interface ReviewCardProps {
   name: string;

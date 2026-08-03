@@ -1,6 +1,6 @@
 import React from "react";
-import Button from "../Button/Button";
 import styles from "./BillingSummary.module.scss";
+import Button from "@/shared/components/Button/Button";
 
 interface BillingSummaryProps {
   subTotal: number;

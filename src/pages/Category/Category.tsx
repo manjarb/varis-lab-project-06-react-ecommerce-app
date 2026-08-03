@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useQuery } from "@tanstack/react-query";
 import CategoryBanner from "./components/CategoryBanner/CategoryBanner";
-import CategoryMenu from "@/components/CategoryMenu/CategoryMenu";
-import ProductsList from "@/components/ProductsList/ProductsList";
-import Pagination from "@/components/Pagination/Pagination";
-import { calculateTotalPages } from "@/utils/pagination.utils";
-import useProductRoute from "@/hooks/useProductRoute/useProductRoute";
+import CategoryMenu from "@/features/products/components/CategoryMenu/CategoryMenu";
+import ProductsList from "@/features/products/components/ProductsList/ProductsList";
+import Pagination from "@/shared/components/Pagination/Pagination";
+import { calculateTotalPages } from "@/shared/utils/pagination.utils";
+import useProductRoute from "@/shared/hooks/useProductRoute";
 import { productQueries } from "@/features/products/queries";
-import { Category as CategoryType } from "@/types/product.type";
+import { Category as CategoryType } from "@/features/products/types";
 
 const PAGE_LIMIT = 20;
 

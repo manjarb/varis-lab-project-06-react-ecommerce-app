@@ -1,6 +1,6 @@
 import React from "react";
-import { Category } from "../../types/product.type";
 import styles from "./CategoryMenu.module.scss";
+import { Category } from "@/features/products/types";
 
 interface CategoryMenuProps {
   categories: Category[];
