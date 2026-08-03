@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { CheckoutAddressFormData } from "../../../components/CheckoutAddressForm/CheckoutAddressForm";
 import {
@@ -8,7 +7,7 @@ import {
 } from "../../../consts/checkout.const";
 import { useCart } from "../../../hooks/useCart/useCart";
 import useProductRoute from "../../../hooks/useProductRoute/useProductRoute";
-import { config } from "../../../configs/environment";
+import { placeOrder } from "@/features/checkout/api";
 
 const useCheckout = () => {
   const [checkoutAddress, setCheckoutAddress] =
@@ -52,19 +51,6 @@ const useCheckout = () => {
     setSelectedPaymentOptionId(optionId);
   };
 
-  const placeOrder = async (
-    userId: number,
-    cartItems: { id: number; quantity: number }[],
-    address: CheckoutAddressFormData,
-  ) => {
-    const response = await axios.post(`${config.baseURL}/carts/add`, {
-      userId,
-      products: cartItems,
-      address,
-    });
-    return response.data;
-  };
-
   const { mutate: placeOrderMutate, isPending: isPlaceOrderLoading } =
     useMutation({
       mutationFn: () => {
@@ -72,14 +58,14 @@ const useCheckout = () => {
           throw new Error("Delivery Address is Missing");
         }
 
-        return placeOrder(
-          1, // Replace with the actual user ID
-          cart.items.map((item) => ({
+        return placeOrder({
+          userId: 1,
+          products: cart.items.map((item) => ({
             id: item.id,
             quantity: item.quantity,
           })),
-          checkoutAddress,
-        );
+          address: checkoutAddress,
+        });
       },
       onSuccess: () => {
         goToOrderSuccess();
