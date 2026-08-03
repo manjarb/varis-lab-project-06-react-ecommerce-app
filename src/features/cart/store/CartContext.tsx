@@ -18,6 +18,7 @@ export interface CartContextProps {
   addToCart: (item: CartItem) => void;
   removeFromCart: (id: number) => void;
   updateQuantity: (id: number, quantity: number) => void;
+  clearCart: () => void;
 }
 
 export enum CartActionTypes {
