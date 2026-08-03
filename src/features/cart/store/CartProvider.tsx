@@ -1,20 +1,20 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import {
   CartActionTypes,
   CartContext,
   CartItem,
-  CartState,
 } from "./CartContext";
 import { cartReducer } from "./cartReducer";
-
-const initialState: CartState = {
-  items: [],
-};
+import { loadCartState, saveCartState } from "./cartStorage";
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [cart, dispatch] = useReducer(cartReducer, initialState);
+  const [cart, dispatch] = useReducer(cartReducer, undefined, loadCartState);
+
+  useEffect(() => {
+    saveCartState(cart);
+  }, [cart]);
 
   const addToCart = (item: CartItem) => {
     dispatch({ type: CartActionTypes.ADD_TO_CART, payload: item });
