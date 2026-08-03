@@ -1,17 +1,23 @@
 import React, { useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
-import useProductDetail from "../../hooks/useProductDetail/useProductDetail";
-import CategoryBanner from "../Category/components/CategoryBanner/CategoryBanner";
-import ProductImageGallery from "../../components/ProductImageGallery/ProductImageGallery";
-import { calculateOriginalPrice } from "../../utils/price.utlls";
-import ProductDetailInfo from "../../components/ProductDetailInfo/ProductDetailInfo";
-import AddToCartModalContent from "../../components/AddToCartModalContent/AddToCartModalContent";
-import { useCart } from "../../hooks/useCart/useCart";
+import { useParams } from "react-router";
+import { useQuery } from "@tanstack/react-query";
 import ReviewSection from "./components/ReviewSection";
+import CategoryBanner from "@/pages/Category/components/CategoryBanner/CategoryBanner";
+import ProductImageGallery from "@/components/ProductImageGallery/ProductImageGallery";
+import { calculateOriginalPrice } from "@/utils/price.utlls";
+import ProductDetailInfo from "@/components/ProductDetailInfo/ProductDetailInfo";
+import AddToCartModalContent from "@/components/AddToCartModalContent/AddToCartModalContent";
+import { useCart } from "@/hooks/useCart/useCart";
+import { productQueries } from "@/features/products/queries";
 
 const Product: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { productDetail, isLoading } = useProductDetail();
+  const { id } = useParams<{ id: string }>();
+  const { data: productDetail, isLoading } = useQuery({
+    ...productQueries.detail(id ?? ""),
+    enabled: !!id,
+  });
   const { addToCart } = useCart();
 
   const onOpenModal = () => setIsModalOpen(true);
