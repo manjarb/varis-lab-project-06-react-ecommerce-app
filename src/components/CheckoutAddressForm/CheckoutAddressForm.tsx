@@ -1,29 +1,18 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../Input/Input";
 import Button from "../Button/Button";
+import {
+  checkoutAddressSchema,
+  CheckoutAddressFormData,
+} from "./checkoutAddress.schema";
 
-export interface CheckoutAddressFormData {
-  address: string;
-  email: string;
-  phone: string;
-}
+export type { CheckoutAddressFormData };
 
 interface CheckoutAddressFormProps {
   onSubmit: (data: CheckoutAddressFormData) => void;
 }
-
-// Yup schema for validation
-const validationSchema = yup.object().shape({
-  address: yup.string().required("Address is required"),
-  email: yup
-    .string()
-    .email("Enter a valid email address")
-    .required("Email is required"),
-  phone: yup.string().required("Phone number is required"),
-});
 
 const CheckoutAddressForm: React.FC<CheckoutAddressFormProps> = ({
   onSubmit,
@@ -33,7 +22,7 @@ const CheckoutAddressForm: React.FC<CheckoutAddressFormProps> = ({
     handleSubmit,
     formState: { errors },
   } = useForm<CheckoutAddressFormData>({
-    resolver: yupResolver(validationSchema),
+    resolver: zodResolver(checkoutAddressSchema),
   });
 
   const onFormSubmit = (data: CheckoutAddressFormData) => {
