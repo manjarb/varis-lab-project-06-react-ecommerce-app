@@ -602,11 +602,10 @@ git commit -m "test: add Vitest + RTL + MSW infrastructure and utils tests"
 
 ```bash
 npm uninstall yup
-npm install zod@4.4.3
-npm install -D @hookform/resolvers@5.7.1 react-hook-form@latest
+npm install zod@4.4.3 @hookform/resolvers@5.7.1 react-hook-form@latest
 ```
 
-(`@hookform/resolvers` is a runtime dep in this project's package.json — keep it wherever npm puts it, just ensure the version is 5.7.1.)
+(All three are runtime dependencies — no `-D`.)
 
 - [ ] **Step 2: Write the failing schema test**
 
