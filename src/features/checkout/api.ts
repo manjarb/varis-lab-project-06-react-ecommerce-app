@@ -1,5 +1,5 @@
 import { apiClient } from "@/shared/api/client";
-import { CheckoutAddressFormData } from "@/components/CheckoutAddressForm/CheckoutAddressForm";
+import { CheckoutAddressFormData } from "@/features/checkout/components/CheckoutAddressForm/CheckoutAddressForm";
 
 export interface PlaceOrderPayload {
   userId: number;

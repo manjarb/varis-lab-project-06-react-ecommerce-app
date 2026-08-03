@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
-import { useCart } from "@/hooks/useCart/useCart";
+import { useCart } from "@/features/cart/useCart";
 import CategoryBanner from "@/pages/Category/components/CategoryBanner/CategoryBanner";
-import CartTable from "@/components/CartTable/CartTable";
+import CartTable from "@/features/cart/components/CartTable/CartTable";
 import Button from "@/shared/components/Button/Button";
 import useProductRoute from "@/shared/hooks/useProductRoute";
 

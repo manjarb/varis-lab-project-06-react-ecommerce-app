@@ -1,12 +1,12 @@
 import React from "react";
-import useCheckout from "./hooks/useCheckout";
 import styles from "./Checkout.module.scss";
+import useCheckout from "@/features/checkout/useCheckout";
 import CategoryBanner from "@/pages/Category/components/CategoryBanner/CategoryBanner";
-import CheckoutAddressBox from "@/components/CheckoutAddressBox/CheckoutAddressBox";
-import CheckoutDeliveryBox from "@/components/CheckoutDeliveryBox/CheckoutDeliveryBox";
-import CheckoutPaymentBox from "@/components/CheckoutPaymentBox/CheckoutPaymentBox";
-import SummaryOrder from "@/components/SummaryOrder/SummaryOrder";
-import BillingSummary from "@/components/BillingSummary/BillingSummary";
+import CheckoutAddressBox from "@/features/checkout/components/CheckoutAddressBox/CheckoutAddressBox";
+import CheckoutDeliveryBox from "@/features/checkout/components/CheckoutDeliveryBox/CheckoutDeliveryBox";
+import CheckoutPaymentBox from "@/features/checkout/components/CheckoutPaymentBox/CheckoutPaymentBox";
+import SummaryOrder from "@/features/checkout/components/SummaryOrder/SummaryOrder";
+import BillingSummary from "@/features/checkout/components/BillingSummary/BillingSummary";
 
 const Checkout: React.FC = () => {
   const {

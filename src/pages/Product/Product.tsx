@@ -7,8 +7,8 @@ import CategoryBanner from "@/pages/Category/components/CategoryBanner/CategoryB
 import ProductImageGallery from "@/features/products/components/ProductImageGallery/ProductImageGallery";
 import { calculateOriginalPrice } from "@/shared/utils/price.utils";
 import ProductDetailInfo from "@/features/products/components/ProductDetailInfo/ProductDetailInfo";
-import AddToCartModalContent from "@/components/AddToCartModalContent/AddToCartModalContent";
-import { useCart } from "@/hooks/useCart/useCart";
+import AddToCartModalContent from "@/features/cart/components/AddToCartModalContent/AddToCartModalContent";
+import { useCart } from "@/features/cart/useCart";
 import { productQueries } from "@/features/products/queries";
 
 const Product: React.FC = () => {
