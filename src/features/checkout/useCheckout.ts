@@ -14,7 +14,7 @@ const useCheckout = () => {
   const [selectedPaymentOptionId, setSelectedPaymentOptionId] =
     useState<number>(paymentOptions[0].id);
   const { goToOrderSuccess } = useProductRoute();
-  const { cart } = useCart();
+  const { cart, clearCart } = useCart();
 
   // Helper to get selected delivery option
   const selectedDeliveryOption = useMemo(
@@ -65,6 +65,7 @@ const useCheckout = () => {
         });
       },
       onSuccess: () => {
+        clearCart();
         goToOrderSuccess();
       },
     });

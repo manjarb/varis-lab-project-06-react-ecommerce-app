@@ -1,9 +1,5 @@
 import React, { useEffect, useReducer } from "react";
-import {
-  CartActionTypes,
-  CartContext,
-  CartItem,
-} from "./CartContext";
+import { CartActionTypes, CartContext, CartItem } from "./CartContext";
 import { cartReducer } from "./cartReducer";
 import { loadCartState, saveCartState } from "./cartStorage";
 
