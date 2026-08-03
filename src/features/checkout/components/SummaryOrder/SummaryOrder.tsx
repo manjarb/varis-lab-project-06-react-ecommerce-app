@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./SummaryOrder.module.scss";
 import { useCart } from "@/features/cart/useCart";
-import SummaryOrderItem from "@/features/cart/components/SummaryOrderItem/SummaryOrderItem";
+import SummaryOrderItem from "@/features/checkout/components/SummaryOrderItem/SummaryOrderItem";
 
 const SummaryOrder: React.FC = () => {
   const { cart } = useCart();

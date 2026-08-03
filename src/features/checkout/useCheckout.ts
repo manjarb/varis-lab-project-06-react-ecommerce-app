@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { CheckoutAddressFormData } from "@/features/checkout/components/CheckoutAddressForm/CheckoutAddressForm";
+import { CheckoutAddressFormData } from "@/features/checkout/schema";
 import { deliveryOptions, paymentOptions } from "@/features/checkout/consts";
 import { useCart } from "@/features/cart/useCart";
 import useProductRoute from "@/shared/hooks/useProductRoute";

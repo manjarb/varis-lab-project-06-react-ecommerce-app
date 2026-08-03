@@ -25,5 +25,7 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     setupFiles: "./src/test/setup.ts",
+    // MSW handlers hardcode the host, so tests must not depend on .env
+    env: { VITE_API_BASE_URL: "https://dummyjson.com" },
   },
 });
