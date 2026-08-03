@@ -1,28 +1,11 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./styles/main.scss";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import App from "./App.tsx";
-
 import "react-loading-skeleton/dist/skeleton.css";
-import { CartProvider } from "./contexts/cart/CartProvider.tsx";
-
-// Create a QueryClient instance
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 60 * 1000,
-      retry: 1,
-    },
-  },
-});
+import App from "./app/App";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <CartProvider>
-        <App />
-      </CartProvider>
-    </QueryClientProvider>
+    <App />
   </StrictMode>,
 );
