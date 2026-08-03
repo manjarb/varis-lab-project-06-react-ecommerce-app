@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   faTruck,
   faVolumeHigh,
@@ -7,33 +7,41 @@ import {
 import { faClock, faCreditCard } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ClipLoader from "react-spinners/ClipLoader";
-import CountdownTimer from "../../components/CountdownTimer/CountdownTimer";
-import useProducts from "../../hooks/useProducts/useProducts";
-import ImageZoom from "../../components/ImageZoom/ImageZoom";
-import { Category } from "../../types/product.type";
-import CategoryMenu from "../../components/CategoryMenu/CategoryMenu";
-import { Category as CategoryType } from "../../types/product.type";
-import ProductsList from "../../components/ProductsList/ProductsList";
-import FeatureCard from "../../components/FeatureCard/FeatureCard";
-import useProductRoute from "../../hooks/useProductRoute/useProductRoute";
+import { useQuery } from "@tanstack/react-query";
 import styles from "./Home.module.scss";
 import Banner from "./components/Banner/Banner";
+import CountdownTimer from "@/components/CountdownTimer/CountdownTimer";
+import ImageZoom from "@/components/ImageZoom/ImageZoom";
+import CategoryMenu from "@/components/CategoryMenu/CategoryMenu";
+import ProductsList from "@/components/ProductsList/ProductsList";
+import FeatureCard from "@/components/FeatureCard/FeatureCard";
+import useProductRoute from "@/hooks/useProductRoute/useProductRoute";
+import { productQueries } from "@/features/products/queries";
+import { Category as CategoryType } from "@/types/product.type";
+
+const PRODUCTS_LIST_LIMIT = 12;
 
 const Home: React.FC = () => {
-  const productsListLimit = 12;
-  const [currentCategory, setCurrentCategory] = useState<CategoryType | null>(
+  const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(
     null,
   );
-  const {
-    fetchBestProducts,
-    fetchProductsFromCategory,
-    fetchCategories,
-    isProductsFromCategoryLoading,
-    bestProducts,
-    categories,
-    productsFromCategory,
-  } = useProducts();
   const { goToProductDetails } = useProductRoute();
+
+  const { data: bestProductsData, isLoading: isBestProductsLoading } = useQuery(
+    productQueries.list({ limit: 5 }),
+  );
+  const { data: categories } = useQuery(productQueries.categories());
+
+  const currentCategory = selectedCategory ?? categories?.[0] ?? null;
+
+  const { data: categoryProducts, isLoading: isCategoryProductsLoading } =
+    useQuery({
+      ...productQueries.byCategory({
+        category: currentCategory?.slug ?? "",
+        limit: PRODUCTS_LIST_LIMIT,
+      }),
+      enabled: currentCategory !== null,
+    });
 
   const targetDate = useMemo(() => {
     const date = new Date();
@@ -42,32 +50,9 @@ const Home: React.FC = () => {
     return date.toISOString();
   }, []);
 
-  const onCategoryClick = useCallback((category: Category) => {
-    setCurrentCategory(category);
-    fetchProductsFromCategory({
-      category: category.slug,
-      limit: productsListLimit,
-    });
-  }, []);
-
   const onProductClick = (productId: number) => {
     goToProductDetails(productId);
   };
-
-  useEffect(() => {
-    fetchBestProducts();
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    if (categories?.length) {
-      setCurrentCategory(categories[0]);
-      fetchProductsFromCategory({
-        category: categories[0].slug,
-        limit: productsListLimit,
-      });
-    }
-  }, [categories]);
 
   return (
     <>
@@ -105,7 +90,7 @@ const Home: React.FC = () => {
             <CountdownTimer targetDate={targetDate} />
           </div>
           <div className="flex gap-25">
-            {isProductsFromCategoryLoading ? (
+            {isBestProductsLoading ? (
               <div className="text-center">
                 <ClipLoader
                   size={40}
@@ -115,7 +100,7 @@ const Home: React.FC = () => {
               </div>
             ) : (
               <ProductsList
-                products={bestProducts}
+                products={bestProductsData?.products}
                 onProductClick={onProductClick}
               />
             )}
@@ -146,13 +131,23 @@ const Home: React.FC = () => {
             <CategoryMenu
               activeCategory={currentCategory?.slug}
               categories={categories || []}
-              onCategoryClick={onCategoryClick}
+              onCategoryClick={setSelectedCategory}
             />
             <div className="category-list-container category-list-box">
-              <ProductsList
-                products={productsFromCategory?.products}
-                onProductClick={onProductClick}
-              />
+              {isCategoryProductsLoading ? (
+                <div className="text-center">
+                  <ClipLoader
+                    size={40}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                  />
+                </div>
+              ) : (
+                <ProductsList
+                  products={categoryProducts?.products}
+                  onProductClick={onProductClick}
+                />
+              )}
             </div>
           </div>
         </section>
