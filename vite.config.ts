@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
@@ -19,5 +20,10 @@ export default defineConfig({
   // behavior. See https://vite.dev/guide/migration (CJS interop changes).
   legacy: {
     inconsistentCjsInterop: true,
+  },
+  test: {
+    environment: "jsdom",
+    globals: true,
+    setupFiles: "./src/test/setup.ts",
   },
 });
