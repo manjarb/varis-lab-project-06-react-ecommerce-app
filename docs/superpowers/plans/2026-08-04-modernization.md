@@ -318,7 +318,7 @@ git commit -m "chore: ESLint 10, Prettier, import-x, query lint plugin, @ alias"
 
 **Interfaces:**
 
-- Produces: `npm run test` / `npm run test:watch`; MSW `server` with dummyjson-shaped `handlers`; fixtures `makeProduct(overrides?)`, `makeProductsResponse(count, overrides?)`, `categories` (array of 3 `Category`); `createTestQueryClient()` and `renderWithClient(ui)` helpers in `src/test/utils.tsx`. All later test tasks consume these exact names.
+- Produces: `npm run test` / `npm run test:watch`; MSW `server` with dummyjson-shaped `handlers`; fixtures `makeProduct(overrides?)`, `makeProductsResponse(count, overrides?)`, `categories` (array of 3 `Category`); `createTestQueryClient()` and `createQueryWrapper()` helpers in `src/test/utils.tsx`. All later test tasks consume these exact names.
 
 - [ ] **Step 1: Install test packages**
 
