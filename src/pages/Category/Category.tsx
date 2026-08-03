@@ -1,64 +1,46 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
-
-import useProducts from "../../hooks/useProducts/useProducts";
-import CategoryMenu from "../../components/CategoryMenu/CategoryMenu";
-import { Category as CategoryType } from "../../types/product.type";
-import ProductsList from "../../components/ProductsList/ProductsList";
-import Pagination from "../../components/Pagination/Pagination";
-import { calculateTotalPages } from "../../utils/pagination.utils";
-import useProductRoute from "../../hooks/useProductRoute/useProductRoute";
+import { useQuery } from "@tanstack/react-query";
 import CategoryBanner from "./components/CategoryBanner/CategoryBanner";
+import CategoryMenu from "@/components/CategoryMenu/CategoryMenu";
+import ProductsList from "@/components/ProductsList/ProductsList";
+import Pagination from "@/components/Pagination/Pagination";
+import { calculateTotalPages } from "@/utils/pagination.utils";
+import useProductRoute from "@/hooks/useProductRoute/useProductRoute";
+import { productQueries } from "@/features/products/queries";
+import { Category as CategoryType } from "@/types/product.type";
+
+const PAGE_LIMIT = 20;
 
 const Category: React.FC = () => {
-  const [currentCategory, setCurrentCategory] = useState<CategoryType | null>(
+  const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(
     null,
   );
-  const {
-    fetchCategories,
-    fetchProductsFromCategory,
-    onUpdatePage,
-    categories,
-    productsFromCategory,
-    pagination,
-    page,
-    defaultLimit,
-    isProductsFromCategoryLoading,
-  } = useProducts();
+  const [page, setPage] = useState(1);
   const { goToProductDetails } = useProductRoute();
 
-  const onCategoryClick = useCallback((category: CategoryType) => {
-    setCurrentCategory(category);
-    onUpdatePage(1);
-    fetchProductsFromCategory({ category: category.slug, page: 1 });
-  }, []);
+  const { data: categories } = useQuery(productQueries.categories());
+  const currentCategory = selectedCategory ?? categories?.[0] ?? null;
 
-  const handlePageChange = (page: number) => {
-    onUpdatePage(page);
-    if (currentCategory) {
-      fetchProductsFromCategory({
-        category: currentCategory?.slug,
-        page,
-      });
-    }
+  const { data, isLoading } = useQuery({
+    ...productQueries.byCategory({
+      category: currentCategory?.slug ?? "",
+      page,
+      limit: PAGE_LIMIT,
+    }),
+    enabled: currentCategory !== null,
+  });
+
+  const totalPages = data ? calculateTotalPages(data.total, PAGE_LIMIT) : 0;
+
+  const onCategoryClick = (category: CategoryType) => {
+    setSelectedCategory(category);
+    setPage(1);
   };
 
   const onProductClick = (productId: number) => {
     goToProductDetails(productId);
   };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    if (categories?.length) {
-      setCurrentCategory(categories[0]);
-      fetchProductsFromCategory({
-        category: categories[0].slug,
-      });
-    }
-  }, [categories]);
 
   return (
     <>
@@ -72,7 +54,7 @@ const Category: React.FC = () => {
               onCategoryClick={onCategoryClick}
             />
             <div className="category-list-container">
-              {isProductsFromCategoryLoading ? (
+              {isLoading ? (
                 <div className="text-center">
                   <ClipLoader
                     size={40}
@@ -84,18 +66,15 @@ const Category: React.FC = () => {
                 <>
                   <div className="category-list-box mb-30">
                     <ProductsList
-                      products={productsFromCategory?.products}
+                      products={data?.products}
                       onProductClick={onProductClick}
                     />
                   </div>
-                  {pagination && (
+                  {totalPages > 0 && (
                     <Pagination
                       currentPage={page}
-                      totalPages={calculateTotalPages(
-                        pagination?.total,
-                        defaultLimit,
-                      )}
-                      onPageChange={handlePageChange}
+                      totalPages={totalPages}
+                      onPageChange={setPage}
                     />
                   )}
                 </>
